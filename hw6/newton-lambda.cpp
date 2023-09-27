@@ -10,7 +10,15 @@ using std::cin;
 using std::cout;
 using std::function;
 
-double newton_formula(function<double(double)> f, function<double(double)> fprime) { //function to calculate x using newton formula
+/**
+ * Function to calculate x using newton formula
+ * 
+ * Inputs: Lambda functions f and fprime
+ * Output: double x 
+ *
+ */
+
+double newton_formula(function<double(double)> f, function<double(double)> fprime) {
     double x{1.}; // initialize x
     while (true) {
         auto fx = f(x); //plug in x to input function
@@ -20,9 +28,25 @@ double newton_formula(function<double(double)> f, function<double(double)> fprim
     }
     return x;
 }
-double newton_root(function<double(double)> f, function<double(double)> fprime) { // exercise 4 input f and fprime
+
+/**
+ * Function to calculate root for Exercise 4
+ *
+ * Inputs: Lambda functions f and fprime
+ * Output: double x
+ *
+ */
+
+double newton_root(function<double(double)> f, function<double(double)> fprime) {
     return newton_formula(f, fprime); // return the x calculated using f and fprime
 }
+
+/**
+ * Function for Exercise 5
+ *
+ * Input: Lambda function f
+ * Output: double x
+*/
 
 double newton_root(function<double(double)> f) { // exercise 5 input f only
     double x{1.}; // initialize x
@@ -43,20 +67,19 @@ int main(int argc,char **argv) {
     ("cxxopts",
      "Commandline options demo");
     options.add_options()
-    ("n,number", "input integer",
-    cxxopts::value<int>()
-    ->default_value("1")
+    ("n,number", "input number",
+    cxxopts::value<double>()	// option for double 
+    ->default_value("1.00")	// setting default value
     );
 
     auto result = options.parse(argc, argv);
 
-    auto number = result["number"].as<int>();
+    auto number = result["number"].as<double>();
     cout << "Using number: " << number << '\n';
-    double number;
     auto f = [number](double x) { return x * x - number; }; // use lambda function to determine f
     //auto fprime = [number](double x) { return 2 * x; };
     auto root = newton_root(f); // calculate root using f 
-    cout << "sqrt(" << number << ") = " << root << '\n'; // print out the root calculated using inputted number    
+    cout << "The root of " << number << " is " << root << '\n'; // print out the root calculated using inputted number    
 
     return 0;
 }
