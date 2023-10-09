@@ -1,0 +1,1 @@
+/opt/rh/devtoolset-8/root/usr/bin/c++     CMakeFiles/hw7.dir/align.cpp.o  -o hw7   -L/opt/local/packages/installation-fmtlib-10.0.0-isp-intel23/lib64  -Wl,-rpath,/opt/local/packages/installation-fmtlib-10.0.0-isp-intel23/lib64: -lfmt 
