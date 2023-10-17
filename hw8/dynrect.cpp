@@ -6,6 +6,9 @@
 #include <iostream>
 #include <cmath>
 
+using std::endl;
+using std::cout;
+using std::cin;
 using std::make_shared;
 using std::shared_ptr;
 
@@ -66,17 +69,29 @@ int main()
 {
     // point origin: (0,0)
     // point fivetwo: (5,2)
-    auto origin = make_shared<Point>(0, 0);
-    auto fivetwo = make_shared<Point>(5, 2);
+    //auto origin = make_shared<Point>(0, 0);
+    //auto fivetwo = make_shared<Point>(5, 2);
+    //User input for the coordinate values
+    cout << "Input first two x and y points" << endl;
+    int ptx = 0;
+    int pty = 0;
+    cin >> ptx >> pty;
+    auto rectx = make_shared<Point>(ptx, pty); //makes the shared point
+    cout << "Input second two x and y points" << endl;
+    cin >> ptx >> pty;
+    auto recty = make_shared<Point>(ptx, pty);
 
     // Make a dynamic rectangle
-    DynRectangle lielow(origin, fivetwo);
+    DynRectangle lielow(rectx, recty); //makes the rectangle
 
     // Calculate and print the initial area
     std::cout << "Area: " << lielow.calculateArea() << '\n';
 
     // Scale the top-right point
-    fivetwo->scale(2.0);
+    double s = 0.0;
+    cout << "Input your scale";
+    cin >> s; //user input for the scale value
+    recty->scale(s);
 
     // Recalculate and print the area after scaling
     std::cout << "Area: " << lielow.calculateArea() << '\n';
