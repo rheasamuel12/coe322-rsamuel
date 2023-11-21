@@ -1,2 +1,0 @@
-/home/rheasamuel/coe322-rsamuel/finalproject/CMakeFiles/rebuild_cache.dir
-/home/rheasamuel/coe322-rsamuel/finalproject/CMakeFiles/edit_cache.dir
