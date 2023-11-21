@@ -1,1 +1,0 @@
-/opt/rh/devtoolset-8/root/usr/bin/c++     CMakeFiles/hw10.dir/hw10.cpp.o  -o hw10   -L/opt/local/packages/installation-catch2-3.1.1-isp-intel23/lib64  -Wl,-rpath,/opt/local/packages/installation-catch2-3.1.1-isp-intel23/lib64: -lCatch2Main -lCatch2 
