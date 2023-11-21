@@ -4,91 +4,58 @@
 //Final Project: Infectious Disease Simulation
 
 #include <iostream>
+#include <iomanip>
 using namespace std;
+#include "infectiousdisease.hpp"
+#define CATCH_CONFIG_MAIN
+#include "catch2/catch_all.hpp"
 
-class Disease{
-    public:
-    double chance_transmission;
-    int infectious_days;
+TEST_CASE("Infection with 100% transmittable disease", "[Person]") {
+    Disease covid(1.0, 5); // 100% transmission chance, 5 days of infection
+    Person person;
+    // After being infected, the person should register as sick
+    person.infect(covid);
+    REQUIRE(person.get_status() == "Infected");
+}
 
-    Disease(int transmissionChance, int daysSick)
-        :chance_transmission(transmissionChance), infectious_days(daysSick) {}
+TEST_CASE("Contact with vaccinated/recovered person and disease", "[Person]") {
+    Disease covid(0.5, 7); // 50% transmission chance
+    Person vaccinatedPerson("Vaccinated", 0);
+    //vaccinatedPerson.get_vaccinated();
 
-    int getInfectiousDays() const
-    {
-        return infectious_days;
-    }
-    double getTransmissionChance() const
-    {
-        return chance_transmission;
-    }
-};
+    Person recoveredPerson("Recovered", 0);
+    //recoveredPerson.one_more_day(); // Make the person "Recovered"
 
+    // If vaccinated or recovered, they should stay in their original state
+    vaccinatedPerson.infect(covid);
+    recoveredPerson.infect(covid);
 
-class Person{
-    private:
-    string status; //status of person (susceptible, infected, recovered, vaccinated)
-    int infectiousDays;
+    REQUIRE(vaccinatedPerson.status_string() == "Vaccinated");
+    REQUIRE(recoveredPerson.status_string() == "Recovered");
+}
 
-    public:
-    Person() : status("Susceptible"), infectiousDays(1) {}
+TEST_CASE("Transmission chance test", "[Person]") {
+    // Disease with 50% transmission chance
+    Disease covid(0.5, 7);
 
-    void infect(const Disease& disease) {
-        if (status == "Susceptible") {
-            status = "Infected";
-            infectiousDays = disease.getInfectiousDays();
+    int numPeople = 1000; // Number of people in contact
+    int numInfected = 0;
+
+    // Simulate contact with the disease for each person
+    for (int x = 0; x< numPeople; x++) {
+        Person person;
+        person.infect(covid);
+
+        if (person.get_status() == "Infected") {
+            numInfected++;
         }
-     }
-
-    string get_status(){ //returns whether person is S,I,R
-        return status;
-    }
-    void one_more_day(){ //updates the status of the person to the next day
-       if(status == "Infected")
-       {
-            if(!isRecovered())
-            {
-                infectiousDays--;
-            }
-            
-       }
-    }
-    bool isRecovered(){
-        if(infectiousDays<=0)
-        {
-            status = "Recovered";
-            return true;
-        }
-        return false;
     }
 
-    int get_infectiousDays(){
-        return infectiousDays;
-    }
-     
+    // About half of the people should get sick
+    double expectedPercentage = 0.5;
+    double actualPercentage = static_cast<double>(numInfected) / numPeople;
 
-};
-
-int main(){
-    Disease covid(0.5, 5);  // disease with 50% transmission chance and 5 days of sickness
-    Person Rhea;
-
-    // On each day, simulate Rhea's progression
-    for (int x = 1; x <= 10;x++) {
-        Rhea.one_more_day();
-        if(Rhea.get_status() == "Infected")
-        {
-            cout << "On day " << x << ", Rhea is " << Rhea.get_status() << " (" << Rhea.get_infectiousDays() + 1 << " more days to go)" << endl;
-        }
-        else
-            cout << "On day " << x << ", Rhea is " << Rhea.get_status() << endl;
-        // Infect Rhea on day 3
-        if (x == 3) {
-            Rhea.infect(covid);
-            //cout << "Rhea got infected!" << endl;
-        }
-      
-    }
-
-    return 0;
+    // Allow some tolerance due to random nature
+    REQUIRE(actualPercentage >= expectedPercentage - 0.1);
+    REQUIRE(actualPercentage <= expectedPercentage + 0.1);
 }
