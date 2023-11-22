@@ -10,6 +10,9 @@ using namespace std;
 #define CATCH_CONFIG_MAIN
 #include "catch2/catch_all.hpp"
 
+
+
+
 TEST_CASE("Infection with 100% transmittable disease", "[Person]") {
     Disease covid(1.0, 5); // 100% transmission chance, 5 days of infection
     Person person;
@@ -30,8 +33,8 @@ TEST_CASE("Contact with vaccinated/recovered person and disease", "[Person]") {
     vaccinatedPerson.infect(covid);
     recoveredPerson.infect(covid);
 
-    REQUIRE(vaccinatedPerson.status_string() == "Vaccinated");
-    REQUIRE(recoveredPerson.status_string() == "Recovered");
+    REQUIRE(vaccinatedPerson.get_status() == "Vaccinated");
+    REQUIRE(recoveredPerson.get_status() == "Recovered");
 }
 
 TEST_CASE("Transmission chance test", "[Person]") {
