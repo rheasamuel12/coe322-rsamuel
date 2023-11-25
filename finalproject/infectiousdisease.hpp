@@ -62,17 +62,13 @@ class Person{
         return status;
     }
     void one_more_day(){ //updates the status of the person to the next day
-       if(status == "Infected")
+       if(status == "Infected" && infectiousDays>0)
        {
-            if(infectiousDays>0)
-            {
-                infectiousDays--;
-            }
-            else{
-                isRecovered();
-            }
-            
+            infectiousDays--;
        }
+       else{
+            isRecovered();
+        }
     }
     bool isRecovered(){
         if(infectiousDays<=0)

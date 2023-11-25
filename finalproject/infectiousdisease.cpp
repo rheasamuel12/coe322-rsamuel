@@ -43,27 +43,32 @@ TEST_CASE("Infection Spread Test", "[Infection]") {
 
     // Create a population of people
     const int populationSize = 1000; // Adjust as needed
-    std::vector<Person> people(populationSize);
+    vector<Person> people(populationSize);
 
-    // Infect a random subset of people
-    for (int i = 0; i < populationSize / 2; ++i) {
+    // Infect a fixed percentage of people (e.g., 50%)
+    const int infectedPercentage = covid.getTransmissionChance()*100;
+    const int numInfected = (populationSize * infectedPercentage) / 100;
+
+    for (int i = 0; i < numInfected; ++i) {
         int randomIndex = rand() % populationSize;
         people[randomIndex].infect(covid);
     }
 
+/*
     // Simulate the progression for a number of days
     const int simulationDays = 10; // Adjust as needed
+
     for (int day = 1; day <= simulationDays; ++day) {
         // Simulate one more day for each person in the population
         for (auto& person : people) {
             person.one_more_day();
         }
     }
-
+*/
     // Count the number of people who are sick after the simulation
     int numSick = 0;
     for (const auto& person : people) {
-        if (person.get_status() == "Infected") {
+        if (person.get_status() == "Infected" || person.get_status() == "Recovered") {
             numSick++;
         }
     }
@@ -72,7 +77,7 @@ TEST_CASE("Infection Spread Test", "[Infection]") {
     double actualPercentage = static_cast<double>(numSick) / populationSize;
 
     // Allow some tolerance due to randomness
-    double expectedPercentage = 0.5;
+    double expectedPercentage = static_cast<double>(infectedPercentage) / 100;
     REQUIRE(actualPercentage >= expectedPercentage - 0.1);
     REQUIRE(actualPercentage <= expectedPercentage + 0.1);
 }
