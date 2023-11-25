@@ -13,12 +13,17 @@ class Disease{
     public:
     double transmission_probability;
     int duration;
+    
 
     //exercise 49.2
     Disease(int daysSick, int transmissionChance) 
-        :duration(daysSick) , transmission_probability(transmissionChance){}
+        :duration(daysSick) , transmission_probability(transmissionChance){
 
-    Disease(){} //empty constructor
+            srand (time(NULL));
+        }
+
+    Disease(){srand (time(NULL));} //empty constructor
+
 
     //exercise 49.3
     void setDuration(int days)
