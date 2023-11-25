@@ -4,6 +4,7 @@
 //Final Project: Infectious Disease Simulation
 
 #include <iostream>
+#include <vector>
 using namespace std;
 
 #ifndef INFECTIOUSDISEASE_HPP
@@ -70,6 +71,7 @@ class Person{
        if(status == "Infected" && infectiousDays>0)
        {
             infectiousDays--;
+            isRecovered();
        }
        else{
             isRecovered();
@@ -87,10 +89,9 @@ class Person{
     int get_infectiousDays(){
         return infectiousDays;
     }
-    string get_vaccinated(){
+    void set_vaccinated(){
         status = "Vaccinated";
         infectiousDays = 0;
-        return status;
     }
 
     void touch(Person& infected, Disease& disease){
@@ -106,14 +107,100 @@ class Person{
 };
 
 class Population{
+    private:
+    vector<Person> people;
+    int populationSize;
+    //Disease& disease;
+    public:
+     Population(int size, Disease& disease): populationSize(size){
+        people.resize(populationSize);
+        people[0].infect(disease);
+     }
 
+    //Population(int size): populationSize(size){}
+    void random_infectious(double percent, Disease& disease){
+        for(int i = 0; i<populationSize; i++){
+            double randomValue = static_cast<double>(rand()) / (RAND_MAX + 1.0);
+            if(randomValue < percent)
+            {
+                people[i].infect(disease);
+            }
+        }
+    }
+    void random_vaccination(double percent){
+        for(int i = 0; i<populationSize; i++){
+            double randomValue = static_cast<double>(rand()) / (RAND_MAX + 1.0);
+            if(randomValue < percent)
+            {
+                people[i].set_vaccinated();
+            }
+        }
+    }
+    int count_vaccinated(){
+        int vacc = 0;
+        for(int x = 0; x<populationSize; x++)
+        {
+            if(people[x].get_status() == "Vaccinated")
+            {
+                vacc++;
+            }
+        }
+        return vacc;
+    }
+    int count_infected(){
+        int infected = 0;
+        for(int x = 0; x<populationSize; x++)
+        {
+            if(people[x].get_status() == "Infected")
+            {
+                infected++;
+            }
+        }
+        return infected;
+    }
+    void one_more_day(){
+        for(int x = 0; x< populationSize;++x){
+            people[x].one_more_day();
+        }
+    }
+
+    string toStringOne(){
+        string ret = "";
+        for(Person person: people){
+            if(person.get_status() == "Infected")
+            {
+                ret += " +";
+            }else if(person.get_status() == "Susceptible")
+            {
+                ret += " ?";
+            }else if(person.get_status() == "Recovered")
+            {
+                ret+= " -";
+            }
+            else{
+                ret+= " v";
+            }
+        }
+        return ret;
+    }
+    
 };
 
-/*
+
 int main(){
     Disease covid(5, 0.5);  // disease with 50% transmission chance and 5 days of sickness
-    Person Rhea;
+   // Person Rhea;
+    Population population(10,covid);
 
+
+    int countInfected =0;
+    int day = 1;
+    do{
+        countInfected = population.count_infected();
+        cout << "In step " << day++ << " # sick = " << countInfected << ":" << population.toStringOne() << endl ;
+        population.one_more_day();
+    } while(countInfected>0);
+/*
     // On each day, simulate Rhea's progression
     for (int x = 1; x <= 10;x++) {
         Rhea.one_more_day();
@@ -130,8 +217,8 @@ int main(){
         }
       
     }
-
+*/
     return 0;
 }
-*/
+
 #endif
