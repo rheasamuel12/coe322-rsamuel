@@ -15,7 +15,7 @@ using namespace std;
 
 
 TEST_CASE("Infection with 100% transmittable disease", "[Person]") {
-    Disease covid(1.0, 5); // 100% transmission chance, 5 days of infection
+    Disease covid(5,1.0); // 100% transmission chance, 5 days of infection
     Person person;
     // After being infected, the person should register as sick
     person.infect(covid);
@@ -23,7 +23,7 @@ TEST_CASE("Infection with 100% transmittable disease", "[Person]") {
 }
 
 TEST_CASE("Contact with vaccinated/recovered person and disease", "[Person]") {
-    Disease covid(1.0, 7); // 50% transmission chance
+    Disease covid(7,1.0); // 50% transmission chance
     Person vaccinatedPerson("Vaccinated", 0);
     //vaccinatedPerson.get_vaccinated();
 
@@ -40,14 +40,14 @@ TEST_CASE("Contact with vaccinated/recovered person and disease", "[Person]") {
 
 TEST_CASE("Infection Spread Test", "[Infection]") {
     // Create a disease with a 50% transmission chance and 5 days of sickness
-    Disease covid(0.5,5);
+    Disease covid(5,0.5);
 
     // Create a population of people
     const int populationSize = 1000; // Adjust as needed
     vector<Person> people(populationSize);
 
     // Infect a fixed percentage of people (e.g., 50%)
-    const int infectedPercentage = covid.getTransmissionChance()*100;
+    const int infectedPercentage = 50;
     const int numInfected = (populationSize * infectedPercentage) / 100;
 
     for (int i = 0; i < numInfected; ++i) {
@@ -79,6 +79,7 @@ TEST_CASE("Infection Spread Test", "[Infection]") {
 
     // Allow some tolerance due to randomness
     double expectedPercentage = static_cast<double>(infectedPercentage) / 100;
+    cout << actualPercentage << endl;
     REQUIRE(actualPercentage >= expectedPercentage - 0.1);
     REQUIRE(actualPercentage <= expectedPercentage + 0.1);
 }
@@ -133,7 +134,7 @@ TEST_CASE("Infection Spread Test 2", "[Infect]") {
 
     // Allow some tolerance due to randomness
     double expectedPercentage = static_cast<double>(infectedPercentage) / 100;
-    cout << expectedPercentage << endl;
+    cout << actualPercentage << endl;
     REQUIRE(actualPercentage >= expectedPercentage - 0.1);
     REQUIRE(actualPercentage <= expectedPercentage + 0.1);
 }
