@@ -133,7 +133,7 @@ TEST_CASE("Infection Spread Test 2", "[Infect]") {
 
     // Allow some tolerance due to randomness
     double expectedPercentage = static_cast<double>(infectedPercentage) / 100;
-    print(expectedPercentage);
+    cout << expectedPercentage << endl;
     REQUIRE(actualPercentage >= expectedPercentage - 0.1);
     REQUIRE(actualPercentage <= expectedPercentage + 0.1);
 }
