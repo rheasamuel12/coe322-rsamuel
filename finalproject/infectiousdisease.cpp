@@ -87,7 +87,7 @@ TEST_CASE("Infection Spread Test", "[Infection]") {
 //Adapt the above tests, but now a person comes in contact with an infected person, rather than directly
 //with a disease
 
-TEST_CASE("Infection Spread Test", "[Infection]") {
+TEST_CASE("Infection Spread Test 2", "[Infect]") {
     // Create a disease with a 50% transmission chance and 5 days of sickness
     Disease covid(5, 0.5);
 
