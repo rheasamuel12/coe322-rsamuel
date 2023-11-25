@@ -37,28 +37,42 @@ TEST_CASE("Contact with vaccinated/recovered person and disease", "[Person]") {
     REQUIRE(recoveredPerson.get_status() == "Recovered");
 }
 
-TEST_CASE("Transmission chance test", "[Person]") {
-    // Disease with 50% transmission chance
-    Disease covid(0.5, 7);
+TEST_CASE("Infection Spread Test", "[Infection]") {
+    // Create a disease with a 50% transmission chance and 5 days of sickness
+    Disease covid(5, 0.5);
 
-    int numPeople = 1000; // Number of people in contact
-    int numInfected = 0;
+    // Create a population of people
+    const int populationSize = 1000; // Adjust as needed
+    std::vector<Person> people(populationSize);
 
-    // Simulate contact with the disease for each person
-    for (int x = 0; x< numPeople; x++) {
-        Person person;
-        person.infect(covid);
+    // Infect a random subset of people
+    for (int i = 0; i < populationSize / 2; ++i) {
+        int randomIndex = rand() % populationSize;
+        people[randomIndex].infect(covid);
+    }
 
-        if (person.get_status() == "Infected") {
-            numInfected++;
+    // Simulate the progression for a number of days
+    const int simulationDays = 10; // Adjust as needed
+    for (int day = 1; day <= simulationDays; ++day) {
+        // Simulate one more day for each person in the population
+        for (auto& person : people) {
+            person.one_more_day();
         }
     }
 
-    // About half of the people should get sick
-    double expectedPercentage = 0.5;
-    double actualPercentage = static_cast<double>(numInfected) / numPeople;
+    // Count the number of people who are sick after the simulation
+    int numSick = 0;
+    for (const auto& person : people) {
+        if (person.get_status() == "Infected") {
+            numSick++;
+        }
+    }
 
-    // Allow some tolerance due to random nature
+    // Check if about half of the people got sick
+    double actualPercentage = static_cast<double>(numSick) / populationSize;
+
+    // Allow some tolerance due to randomness
+    double expectedPercentage = 0.5;
     REQUIRE(actualPercentage >= expectedPercentage - 0.1);
     REQUIRE(actualPercentage <= expectedPercentage + 0.1);
 }
