@@ -11,23 +11,37 @@ using namespace std;
 
 class Disease{
     public:
-    double chance_transmission;
-    int infectious_days;
+    double transmission_probability;
+    int duration;
 
-    Disease(int transmissionChance, int daysSick)
-        :chance_transmission(transmissionChance), infectious_days(daysSick) {}
+    //exercise 49.2
+    Disease(int daysSick, int transmissionChance) 
+        :duration(daysSick) , transmission_probability(transmissionChance){}
 
-    int getInfectiousDays() const
+    Disease(){} //empty constructor
+
+    //exercise 49.3
+    void setDuration(int days)
     {
-        return infectious_days;
+        duration = days;
+    }
+    //exercise 49.3
+    void setTransmissionChance(double prob)
+    {
+        transmission_probability = prob;
+    }
+
+    int getDuration() const
+    {
+        return duration;
     }
     double getTransmissionChance() const
     {
-        return chance_transmission;
+        return transmission_probability;
     }
 };
 
-
+//exercise 49.1
 class Person{
     private:
     string status; //status of person (susceptible, infected, recovered, vaccinated)
@@ -39,7 +53,7 @@ class Person{
     void infect(const Disease& disease) {
         if (status == "Susceptible") {
             status = "Infected";
-            infectiousDays = disease.getInfectiousDays();
+            infectiousDays = disease.getDuration();
         }
         
      }
@@ -50,9 +64,12 @@ class Person{
     void one_more_day(){ //updates the status of the person to the next day
        if(status == "Infected")
        {
-            if(!isRecovered())
+            if(infectiousDays>0)
             {
                 infectiousDays--;
+            }
+            else{
+                isRecovered();
             }
             
        }
@@ -74,11 +91,23 @@ class Person{
         infectiousDays = 0;
     }
 
+    void touch(Person& infected){
+        if(infected.get_status() == "Susceptible")
+        {
+            status = "Infected"; 
+        }
+    }
+
+
+};
+
+class Population{
+
 };
 
 /*
 int main(){
-    Disease covid(0.5, 5);  // disease with 50% transmission chance and 5 days of sickness
+    Disease covid(5, 0.5);  // disease with 50% transmission chance and 5 days of sickness
     Person Rhea;
 
     // On each day, simulate Rhea's progression
