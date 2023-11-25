@@ -67,7 +67,7 @@ TEST_CASE("Infection Spread Test", "[Infection]") {
 */
     // Count the number of people who are sick after the simulation
     int numSick = 0;
-    for (const auto& person : people) {
+    for (auto& person : people) {
         if (person.get_status() == "Infected" || person.get_status() == "Recovered") {
             numSick++;
         }
@@ -121,7 +121,7 @@ TEST_CASE("Infection Spread Test", "[Infection]") {
 
     // Count the number of people who are sick after the simulation
     int numSick = 0;
-    for (const auto& person : people) {
+    for (auto& person : people) {
         if (person.get_status() == "Infected") {
             numSick++;
         }
