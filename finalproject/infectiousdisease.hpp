@@ -87,10 +87,12 @@ class Person{
         infectiousDays = 0;
     }
 
-    void touch(Person& infected){
-        if(infected.get_status() == "Susceptible")
-        {
-            status = "Infected"; 
+    void touch(Person& infected, Disease& disease){
+        if (status == "Susceptible" && infected.get_status() == "Infected") {
+            double randomValue = static_cast<double>(rand()) / RAND_MAX; // Random value between 0 and 1
+            if (randomValue < disease.getTransmissionChance()) {
+                infect(disease);
+            }
         }
     }
 
