@@ -67,9 +67,8 @@ TEST_CASE("Infection Spread Test", "[Infection]") {
     double actualPercentage = static_cast<double>(numSick) / populationSize;
 
     // Allow some tolerance due to randomness
-    double expectedPercentage = static_cast<double>(infectedPercentage) / 100;
-    REQUIRE(actualPercentage >= expectedPercentage - 0.1);
-    REQUIRE(actualPercentage <= expectedPercentage + 0.1);
+    REQUIRE(actualPercentage >= covid.getTransmissionChance() - 0.1);
+    REQUIRE(actualPercentage <= covid.getTransmissionChance() + 0.1);
 }
 
 
@@ -119,7 +118,6 @@ TEST_CASE("Infection Spread Test 2", "[Infect]") {
     double actualPercentage = static_cast<double>(numSick) / populationSize;
 
     // Allow some tolerance due to randomness
-    double expectedPercentage = static_cast<double>(infectedPercentage) / 100;
-    REQUIRE(actualPercentage >= expectedPercentage - 0.1);
-    REQUIRE(actualPercentage <= expectedPercentage + 0.1);
+    REQUIRE(actualPercentage >= covid.getTransmissionChance() - 0.1);
+    REQUIRE(actualPercentage <= covid.getTransmissionChance() + 0.1);
 }
