@@ -1,7 +1,0 @@
-/home/rheasamuel/coe322-rsamuel/finalproject/CMakeFiles/install/strip.dir
-/home/rheasamuel/coe322-rsamuel/finalproject/CMakeFiles/install/local.dir
-/home/rheasamuel/coe322-rsamuel/finalproject/CMakeFiles/install.dir
-/home/rheasamuel/coe322-rsamuel/finalproject/CMakeFiles/list_install_components.dir
-/home/rheasamuel/coe322-rsamuel/finalproject/CMakeFiles/rebuild_cache.dir
-/home/rheasamuel/coe322-rsamuel/finalproject/CMakeFiles/edit_cache.dir
-/home/rheasamuel/coe322-rsamuel/finalproject/CMakeFiles/finalproject.dir
