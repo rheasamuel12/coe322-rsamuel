@@ -5,6 +5,7 @@
 
 #include <iostream>
 #include <iomanip>
+#include <stdlib.h>
 using namespace std;
 #include "infectiousdisease.hpp"
 #define CATCH_CONFIG_MAIN
@@ -22,7 +23,7 @@ TEST_CASE("Infection with 100% transmittable disease", "[Person]") {
 }
 
 TEST_CASE("Contact with vaccinated/recovered person and disease", "[Person]") {
-    Disease covid(0.5, 7); // 50% transmission chance
+    Disease covid(1.0, 7); // 50% transmission chance
     Person vaccinatedPerson("Vaccinated", 0);
     //vaccinatedPerson.get_vaccinated();
 
@@ -39,7 +40,7 @@ TEST_CASE("Contact with vaccinated/recovered person and disease", "[Person]") {
 
 TEST_CASE("Infection Spread Test", "[Infection]") {
     // Create a disease with a 50% transmission chance and 5 days of sickness
-    Disease covid(5, 0.5);
+    Disease covid(0.5,5);
 
     // Create a population of people
     const int populationSize = 1000; // Adjust as needed
@@ -68,7 +69,7 @@ TEST_CASE("Infection Spread Test", "[Infection]") {
     // Count the number of people who are sick after the simulation
     int numSick = 0;
     for (auto& person : people) {
-        if (person.get_status() == "Infected" || person.get_status() == "Recovered") {
+        if (person.get_status() == "Infected") {
             numSick++;
         }
     }
@@ -89,11 +90,11 @@ TEST_CASE("Infection Spread Test", "[Infection]") {
 
 TEST_CASE("Infection Spread Test 2", "[Infect]") {
     // Create a disease with a 50% transmission chance and 5 days of sickness
-    Disease covid(5, 0.5);
+    Disease covid(0.5,5);
 
     // Create a population of people
     const int populationSize = 1000; // Adjust as needed
-    std::vector<Person> people(populationSize);
+    vector<Person> people(populationSize);
 
     // Infect a fixed percentage of people (e.g., 50%)
     const int infectedPercentage = 50;
@@ -132,6 +133,7 @@ TEST_CASE("Infection Spread Test 2", "[Infect]") {
 
     // Allow some tolerance due to randomness
     double expectedPercentage = static_cast<double>(infectedPercentage) / 100;
+    print(expectedPercentage);
     REQUIRE(actualPercentage >= expectedPercentage - 0.1);
     REQUIRE(actualPercentage <= expectedPercentage + 0.1);
 }
