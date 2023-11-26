@@ -191,21 +191,9 @@ class Population{
         return ret;
     }
     void neighbor(Disease& disease, double probability){
-         for (int x = 0; x < populationSize; ++x) { 
-            if (people[x].get_status() == "Infected") {
-                // Iterate over the neighbors (assuming a linear arrangement)
-                for (int index = max(0, x - 1); index <= min(populationSize - 1, x + 1); ++index) {
-                    // Skip the infected person and vaccinated individuals
-                    if(index != x){
-                        if (people[index].get_status() != "Vaccinated" || people[index].get_status() !="Recovered") {
-                            // Try to infect the neighbor based on contagion probability
-                            double randomValue = static_cast<double>(rand()) / (RAND_MAX + 1.0);
-                            if (randomValue < probability) {
-                                people[index].infect(disease);
-                            }
-                        }
-                    }
-                }
+         for (int x = 0; x < populationSize; ++x) { // ? ? + ? ? ? ? ?
+            if (people[x+1].get_status() == "Infected"|| people[x-1].get_status()=="Infected") {
+                people[x].set_status("Infected");
             }
         }
     }
