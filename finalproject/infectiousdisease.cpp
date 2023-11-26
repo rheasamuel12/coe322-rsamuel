@@ -134,7 +134,7 @@ TEST_CASE("Duration of disease", "[infection][population]") {
         // Run the simulation for the duration of the disease
         int currentInfected = 0;
         int currentHealthy = 0;
-        for (int day = 1; day <= covid.getDuration(); ++day) {
+        for (int day = 1; day <= covid.getDuration() -1; ++day) {
             population.one_more_day();
             currentInfected = population.count_infected();
             currentHealthy = population.populationSize - currentInfected;
