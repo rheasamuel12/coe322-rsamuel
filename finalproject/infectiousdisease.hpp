@@ -200,11 +200,13 @@ class Population{
                         people[x].set_status("Infected");
                     }
                 }else if(x==0){
-                    if(people[x+1.gets_status()=="Infected"]){
+                    if(people[x+1].gets_status()=="Infected"){
                         people[x].set_status("Infected");
                     }
                 } else if(x==populationSize-1){
-                     people[x].set_status("Infected");              
+                    if(people[x-1].get_status()=="Infected"){
+                        people[x].set_status("Infected");      
+                    }        
                 }
             }
         }
