@@ -108,11 +108,11 @@ class Person{
 };
 
 class Population{
-    private:
+    public:
     vector<Person> people;
     int populationSize;
     //Disease& disease;
-    public:
+
      Population(int size, Disease& disease): populationSize(size){
         people.resize(populationSize);
         people[0].infect(disease);
