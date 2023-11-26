@@ -120,3 +120,30 @@ TEST_CASE("Everyone is vaccinated with 100 vacccination rate", "[vaccination]") 
     REQUIRE(population.count_vaccinated() == 1000);
     REQUIRE(population.count_infected() == 0);
 }
+//4.9.3.1.1
+TEST_CASE("Duration of disease", "[infection][population]") {
+        // Create a Disease with 50% transmission chance and 5 days of sickness
+        Disease covid(5, 0.5);
+
+        // Create a Population with 100 people and 0% vaccination rate
+        Population population(100, covid);
+
+        int initialInfected = population.count_infected();
+        int initialHealthy = population.populationSize - initialInfected;
+
+        // Run the simulation for the duration of the disease
+        int currentInfected = 0;
+        int currentHealthy = 0;
+        for (int day = 1; day <= covid.getDuration(); ++day) {
+            population.one_more_day();
+            currentInfected = population.count_infected();
+            currentHealthy = population.populationSize - currentInfected;
+
+            // Check if the number of infected people stays constant during the duration of the disease
+            REQUIRE(currentInfected == initialInfected);
+
+            // Check if the sum of healthy and infected people stays equal to the population size
+            REQUIRE(currentHealthy + currentInfected == population.populationSize);
+
+    }
+}
