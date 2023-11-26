@@ -191,9 +191,13 @@ class Population{
         return ret;
     }
     void neighbor(Disease& disease, double probability){
-         for (int x = 0; x < populationSize; ++x) { // ? ? + ? ? ? ? ?
-            if (people[x+1].get_status() == "Infected"|| people[x-1].get_status()=="Infected") {
-                people[x].set_status("Infected");
+        double randomValue = 0;
+        for (int x = 0; x < populationSize; ++x) { // ? ? + ? ? ? ? ?
+            randomValue = static_cast<double>(rand()) / (RAND_MAX + 1.0);
+            if(randomValue<probability){
+                if (people[x+1].get_status() == "Infected"|| people[x-1].get_status()=="Infected") {
+                    people[x].set_status("Infected");
+                }
             }
         }
     }
@@ -225,7 +229,7 @@ int main(){
         cout << "In step " << day++ << " # sick = " << countInfected << ":" << population.toStringOne() << endl;
 
         // Spread the disease to neighbors
-        population.neighbor(covid, 0.2); // You can adjust the contagion probability
+        population.neighbor(covid, 1); // You can adjust the contagion probability
 
         // Simulate one more day
         population.one_more_day();
@@ -235,7 +239,7 @@ int main(){
     // On each day, simulate Rhea's progression
     for (int x = 1; x <= 10;x++) {
         Rhea.one_more_day();
-        if(Rhea.get_status() == "Infected")
+        if(Rhea.get_status() == "Infected")/
         {
             cout << "On day " << x << ", Rhea is " << Rhea.get_status() << " (" << Rhea.get_infectiousDays() + 1 << " more days to go)" << endl;
         }
