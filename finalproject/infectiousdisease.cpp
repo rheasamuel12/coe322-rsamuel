@@ -108,3 +108,15 @@ TEST_CASE("Infection Spread Test 2", "[Infect]") {
 }
 
 //49.2.3.1 POPULATION TESTS
+TEST_CASE("Everyone is vaccinated with 100% vaccination rate", "[vaccination]") {
+    // Create a Disease with 0% transmission chance and 5 days of sickness
+    Disease covid(5, 0.0);
+
+    // Create a Population with 10 people and 100% vaccination rate
+    Population population(1000, covid);
+    population.random_vaccination(1.0);
+
+    // Check if everyone is vaccinated
+    REQUIRE(population.count_vaccinated() == 1000);
+    REQUIRE(population.count_infected() == 0);
+}
