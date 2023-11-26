@@ -195,8 +195,16 @@ class Population{
         for (int x = 0; x < populationSize; ++x) { // ? ? + ? ? ? ? ?
             randomValue = static_cast<double>(rand()) / (RAND_MAX + 1.0);
             if(randomValue<probability){
-                if (people[x+1].get_status() == "Infected"|| people[x-1].get_status()=="Infected") {
-                    people[x].set_status("Infected");
+                if(x!=0 || x!= populationSize-1){
+                    if (people[x+1].get_status() == "Infected"|| people[x-1].get_status()=="Infected") {
+                        people[x].set_status("Infected");
+                    }
+                }else if(x==0){
+                    if(people[x+1.gets_status()=="Infected"]){
+                        people[x].set_status("Infected");
+                    }
+                } else if(x==populationSize-1){
+                     people[x].set_status("Infected");              
                 }
             }
         }
