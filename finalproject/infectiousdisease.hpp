@@ -114,8 +114,9 @@ class Population{
     //Disease& disease;
 
      Population(int size, Disease& disease): populationSize(size){
+        srand( (unsigned)time( NULL ) );
         people.resize(populationSize);
-        people[0].infect(disease);
+        people[rand() % populationSize +1].infect(disease);
      }
 
     //Population(int size): populationSize(size){}
@@ -187,7 +188,7 @@ class Population{
     
 };
 
- /*
+ 
 int main(){
 
     Disease covid(5, 0.5);  // disease with 50% transmission chance and 5 days of sickness
@@ -202,7 +203,7 @@ int main(){
         cout << "In step " << day++ << " # sick = " << countInfected << ":" << population.toStringOne() << endl ;
         population.one_more_day();
     } while(countInfected>0);
-
+/*
     // On each day, simulate Rhea's progression
     for (int x = 1; x <= 10;x++) {
         Rhea.one_more_day();
@@ -219,8 +220,8 @@ int main(){
         }
       
     }
-
+*/
     return 0;
 }
-*/
+
 #endif
