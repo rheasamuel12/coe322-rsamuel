@@ -68,6 +68,11 @@ class Person{
     string get_status(){ //returns whether person is S,I,R
         return status;
     }
+    void set_status(string s){
+        if(status!=s){
+            status = s;
+        }
+    }
     void one_more_day(){ //updates the status of the person to the next day
        if(status == "Infected" && infectiousDays>0)
        {
@@ -185,8 +190,28 @@ class Population{
         }
         return ret;
     }
-    
+    void neighbor(Disease& disease, double probability){
+         for (int x = 0; x < populationSize; ++x) { 
+            if (people[x].get_status() == "Infected") {
+                // Iterate over the neighbors (assuming a linear arrangement)
+                for (int index = max(0, x - 1); index <= min(populationSize - 1, x + 1); ++index) {
+                    // Skip the infected person and vaccinated individuals
+                    if(index != x){
+                        if (people[index].get_status() != "Vaccinated" || people[index].get_status() !="Recovered") {
+                            // Try to infect the neighbor based on contagion probability
+                            double randomValue = static_cast<double>(rand()) / (RAND_MAX + 1.0);
+                            if (randomValue < probability) {
+                                people[index].infect(disease);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+    }
 };
+
 
  
 int main(){
@@ -194,8 +219,8 @@ int main(){
     Disease covid(5, 0.5);  // disease with 50% transmission chance and 5 days of sickness
    // Person Rhea;
     Population population(10,covid);
-
-
+/*
+    //exercise 49.4
     int countInfected =0;
     int day = 1;
     do{
@@ -203,6 +228,21 @@ int main(){
         cout << "In step " << day++ << " # sick = " << countInfected << ":" << population.toStringOne() << endl ;
         population.one_more_day();
     } while(countInfected>0);
+*/
+    //exercise 49.5
+    int countInfected =0;
+    int day = 1;
+    do {
+        countInfected = population.count_infected();
+        cout << "In step " << day++ << " # sick = " << countInfected << ":" << population.toStringOne() << endl;
+
+        // Spread the disease to neighbors
+        population.neighbor(covid, 0.2); // You can adjust the contagion probability
+
+        // Simulate one more day
+        population.one_more_day();
+    } while (countInfected > 0);
+
 /*
     // On each day, simulate Rhea's progression
     for (int x = 1; x <= 10;x++) {
