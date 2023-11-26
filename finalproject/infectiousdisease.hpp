@@ -187,9 +187,9 @@ class Population{
     
 };
 
-
+ /*
 int main(){
-    /*
+
     Disease covid(5, 0.5);  // disease with 50% transmission chance and 5 days of sickness
    // Person Rhea;
     Population population(10,covid);
@@ -219,8 +219,8 @@ int main(){
         }
       
     }
-*/
+
     return 0;
 }
-
+*/
 #endif
