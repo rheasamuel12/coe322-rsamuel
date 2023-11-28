@@ -202,7 +202,7 @@ TEST_CASE("Test simulation with p = 0.5", "[simulation]") {
         population.one_more_day();
         population.neighbor(covid, 1); // You can adjust the contagion probability
         day++;
-    } while (countHealhy > 0);
+    } while (countHealthy > 0);
 
     REQUIRE_NOTHROW(day == population.populationSize); // populationSize won't equal the days
 }
