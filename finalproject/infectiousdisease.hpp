@@ -121,7 +121,7 @@ class Population{
      Population(int size, Disease& disease): populationSize(size){
         srand( (unsigned)time( NULL ) );
         people.resize(populationSize);
-        people[rand() % populationSize +1].infect(disease);
+        people[rand() % populationSize].infect(disease);
      }
 
     //Population(int size): populationSize(size){}
@@ -192,24 +192,44 @@ class Population{
     }
     void neighbor(Disease& disease, double probability){
         double randomValue = 0;
-        for (int x = 0; x < populationSize; ++x) { // ? ? + ? ? ? ? ?
-            randomValue = static_cast<double>(rand()) / (RAND_MAX + 1.0);
-            if(randomValue<probability){
-                if(x!=0 || x!= populationSize-1){
-                    if (people[x+1].get_status() == "Infected"|| people[x-1].get_status()=="Infected") {
-                        people[x].set_status("Infected");
-                    }
-                }else if(x==0){
-                    if(people[x+1].get_status()=="Infected"){
-                        people[x].set_status("Infected");
-                    }
-                } else if(x==populationSize-1){
-                    if(people[x-1].get_status()=="Infected"){
-                        people[x].set_status("Infected");      
-                    }        
-                }
+        int firstIndex = -1;
+        int lastIndex = -1;
+        for (int x = 0; x < populationSize; ++x) { 
+            if(people[x].get_status() == "Infected" && firstIndex < 0){
+                firstIndex = x;
+            }
+            else if(people[x].get_status() == "Infected"){
+                lastIndex = x;
             }
         }
+
+        randomValue = static_cast<double>(rand()) / (RAND_MAX + 1.0);
+            if(randomValue<probability){
+                //first and last index the same index // ? ? ? ? ? + +
+                if(firstIndex>0 && firstIndex<populationSize-1){
+                    people[firstIndex+1].infect(disease);
+                    people[firstIndex-1].infect(disease);
+                }
+                else if(lastIndex<populationSize-1 && lastIndex>0){
+                    people[lastIndex+1].infect(disease);
+                    people[lastIndex-1].infect(disease);
+                }
+                else if(firstIndex==populationSize-1){
+                    people[firstIndex-1].infect(disease);
+                }
+                else if(firstIndex==0){
+                    while(people[firstIndex+1].get_status() == "Infected"){
+                        firstIndex+=1;
+                    }
+                    people[firstIndex+1].infect(disease);
+                }
+                if(lastIndex==populationSize-1){
+                    while(people[lastIndex-1].get_status() == "Infected"){
+                        lastIndex-=1;
+                    }
+                    people[lastIndex-1].infect(disease);
+                }
+            }
     }
 
 };
@@ -237,12 +257,11 @@ int main(){
     do {
         countInfected = population.count_infected();
         cout << "In step " << day++ << " # sick = " << countInfected << ":" << population.toStringOne() << endl;
-
         // Spread the disease to neighbors
-        population.neighbor(covid, 1); // You can adjust the contagion probability
-
-        // Simulate one more day
         population.one_more_day();
+        population.neighbor(covid, 1); // You can adjust the contagion probability
+        
+
     } while (countInfected > 0);
 
 /*
