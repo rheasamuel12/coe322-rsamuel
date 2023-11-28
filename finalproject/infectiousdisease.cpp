@@ -155,6 +155,7 @@ TEST_CASE("Test simulation with p = 1", "[simulation]") {
     //tests if random index is sick, next day 3 are sick
     Disease covid(5, 1);
     Population population(10, covid);
+    population.initial_infect();
     //one day
     int day = 0;
     while(day<1){
@@ -162,7 +163,7 @@ TEST_CASE("Test simulation with p = 1", "[simulation]") {
         population.neighbor(covid, 1);
         day++;
     }
-    if(population.people[0] || population.people[populationSize-1])
+    if(population.people[0] || population.people[population.populationSize-1])
     {
         REQUIRE(population.count_infected() == 2);
     }
@@ -172,7 +173,9 @@ TEST_CASE("Test simulation with p = 1", "[simulation]") {
 //if index is 0, then the simulation should run for the number of days equal to population size
 TEST_CASE("Test simulation with p = 1, Index = 0", "[simulation]") {
     Disease covid(5, 1);
-    Population population(10, covid, 0);
+    Population population(10, covid);
+    population.people[0].infect();
+    int countInfected = 0;
     int day = 1;
     do {
         countInfected = population.count_infected();
@@ -182,11 +185,13 @@ TEST_CASE("Test simulation with p = 1, Index = 0", "[simulation]") {
         day++;
     } while (countInfected > 0);
 
-    REQUIRE(day == populationSize); 
+    REQUIRE(day == population.populationSize); 
 }
 TEST_CASE("Test simulation with p = 0.5", "[simulation]") {
     Disease covid(5, 1);
-    Population population(10, covid, 0);
+    Population population(10, covid);
+    population.people[0].infect();
+    int countInfected = 0;
     int day = 1;
     do {
         countInfected = population.count_infected();
@@ -196,5 +201,5 @@ TEST_CASE("Test simulation with p = 0.5", "[simulation]") {
         day++;
     } while (countInfected > 0);
 
-    REQUIRE_NOTHROW(day == populationSize); // populationSize won't equal the days
+    REQUIRE_NOTHROW(day == population.populationSize); // populationSize won't equal the days
 }
