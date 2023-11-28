@@ -158,12 +158,17 @@ TEST_CASE("Test simulation with p = 1", "[simulation]") {
     population.initial_infect(covid);
     //one day
     int day = 0;
+    bool ret = false;
+     if(population.people[0].get_status() == "Infected"|| population.people[population.populationSize-1].get_status() == "Infected")
+    {
+        ret = true;
+    }
     while(day<1){
         population.one_more_day();
         population.neighbor(covid, 1);
         day++;
     }
-    if(population.people[0] || population.people[population.populationSize-1])
+    if(ret)
     {
         REQUIRE(population.count_infected() == 2);
     }
