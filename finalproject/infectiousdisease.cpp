@@ -155,7 +155,7 @@ TEST_CASE("Test simulation with p = 1", "[simulation]") {
     //tests if random index is sick, next day 3 are sick
     Disease covid(5, 1);
     Population population(10, covid);
-    population.initial_infect();
+    population.initial_infect(covid);
     //one day
     int day = 0;
     while(day<1){
