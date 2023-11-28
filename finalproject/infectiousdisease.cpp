@@ -182,7 +182,7 @@ TEST_CASE("Test simulation with p = 1, Index = 0", "[simulation]") {
     int days = 1;
     while(population.people[population.populationSize-1].get_status() == "Susceptible"){        
         population.one_more_day();
-        population.neighbor(covid, 1); // You can adjust the contagion probability
+        population.neighbor(covid, 1); 
         days++;
     }
     REQUIRE(days == population.populationSize); 
@@ -191,11 +191,15 @@ TEST_CASE("Test simulation with p = 0.5", "[simulation]") {
     Disease covid(5, 0.5);
     Population population(10, covid);
     population.people[0].infect(covid);
-    int countHealthy = 0;
     int days = 1;
-    while(population.people[population.populationSize-1].get_status() == "Susceptible"){        
+    int countInfected = 1;
+    while(countInfected>0){
+        if(population.people[population.populationSize-1].get_status() != "Susceptible")
+            break;
+        countInfected = population.count_infected();
+        cout << "In step " << day++ << " # sick = " << countInfected << ":" << population.toStringOne() << endl ;
         population.one_more_day();
-        population.neighbor(covid, 0.5); // You can adjust the contagion probability
+        population.neighbor(covid, 0.5); 
         days++;
     }
 
