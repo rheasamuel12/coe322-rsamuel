@@ -174,7 +174,7 @@ TEST_CASE("Test simulation with p = 1", "[simulation]") {
 TEST_CASE("Test simulation with p = 1, Index = 0", "[simulation]") {
     Disease covid(5, 1);
     Population population(10, covid);
-    population.people[0].infect();
+    population.people[0].infect(covid);
     int countInfected = 0;
     int day = 1;
     do {
@@ -190,7 +190,7 @@ TEST_CASE("Test simulation with p = 1, Index = 0", "[simulation]") {
 TEST_CASE("Test simulation with p = 0.5", "[simulation]") {
     Disease covid(5, 1);
     Population population(10, covid);
-    population.people[0].infect();
+    population.people[0].infect(covid);
     int countInfected = 0;
     int day = 1;
     do {
