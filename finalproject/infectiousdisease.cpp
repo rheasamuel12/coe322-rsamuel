@@ -197,7 +197,6 @@ TEST_CASE("Test simulation with p = 0.5", "[simulation]") {
         if(population.people[population.populationSize-1].get_status() != "Susceptible")
             break;
         countInfected = population.count_infected();
-        cout << "In step " << day++ << " # sick = " << countInfected << ":" << population.toStringOne() << endl ;
         population.one_more_day();
         population.neighbor(covid, 0.5); 
         days++;
