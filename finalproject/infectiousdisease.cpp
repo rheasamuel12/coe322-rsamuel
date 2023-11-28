@@ -179,30 +179,25 @@ TEST_CASE("Test simulation with p = 1, Index = 0", "[simulation]") {
     Disease covid(5, 1);
     Population population(10, covid);
     population.people[0].infect(covid);
-    int countHealthy = 0;
-    int day = 0; // + ? ? ? ? ? ? ? ? ?
-    do {
-        countHealthy = population.populationSize - population.count_infected();
+    int days = 1;
+    while(population.people[population.populationSize-1].get_status() == "Susceptible"){        
         population.one_more_day();
         population.neighbor(covid, 1); // You can adjust the contagion probability
-        day++;
-    } while (countHealthy > 0);
-
-    REQUIRE(day == population.populationSize); 
+        days++;
+    }
+    REQUIRE(days == population.populationSize); 
 }
 TEST_CASE("Test simulation with p = 0.5", "[simulation]") {
-    Disease covid(5, 1);
+    Disease covid(5, 0.5);
     Population population(10, covid);
     population.people[0].infect(covid);
     int countHealthy = 0;
-    int day = 1;
-    do {
-        countHealthy = population.populationSize - population.count_infected();
-        // Spread the disease to neighbors
+    int days = 1;
+    while(population.people[population.populationSize-1].get_status() == "Susceptible"){        
         population.one_more_day();
-        population.neighbor(covid, 1); // You can adjust the contagion probability
-        day++;
-    } while (countHealthy > 0);
+        population.neighbor(covid, 0.5); // You can adjust the contagion probability
+        days++;
+    }
 
-    REQUIRE_NOTHROW(day == population.populationSize); // populationSize won't equal the days
+    REQUIRE_NOTHROW(days == population.populationSize); // populationSize won't equal the days
 }
