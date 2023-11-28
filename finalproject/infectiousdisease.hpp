@@ -6,6 +6,7 @@
 #include <iostream>
 #include <stdio.h>
 #include <vector>
+#include<cstdlib>
 using namespace std;
 
 #ifndef INFECTIOUSDISEASE_HPP
@@ -121,8 +122,13 @@ class Population{
      Population(int size, Disease& disease): populationSize(size){
         srand( (unsigned)time( NULL ) );
         people.resize(populationSize);
+        //people[rand() % populationSize].infect(disease);
+     }
+
+     void initial_infect(){
         people[rand() % populationSize].infect(disease);
      }
+    
 
     //Population(int size): populationSize(size){}
     void random_infectious(double percent, Disease& disease){
@@ -191,7 +197,7 @@ class Population{
         return ret;
     }
     void neighbor(Disease& disease, double probability){
-        double randomValue = 0;
+        double randomValue = static_cast<double>(rand()) / (RAND_MAX + 1.0);
         int firstIndex = -1;
         int lastIndex = -1;
         for (int x = 0; x < populationSize; ++x) { 
@@ -203,14 +209,14 @@ class Population{
             }
         }
 
-        randomValue = static_cast<double>(rand()) / (RAND_MAX + 1.0);
+        
             if(randomValue<probability){
                 //first and last index the same index // ? ? ? ? ? + +
                 if(firstIndex>0 && firstIndex<populationSize-1){
                     people[firstIndex+1].infect(disease);
                     people[firstIndex-1].infect(disease);
                 }
-                else if(lastIndex<populationSize-1 && lastIndex>0){
+                if(lastIndex<populationSize-1 && lastIndex>0){
                     people[lastIndex+1].infect(disease);
                     people[lastIndex-1].infect(disease);
                 }
@@ -235,12 +241,13 @@ class Population{
 };
 
 
- 
+ /*
 int main(){
 
     Disease covid(5, 0.5);  // disease with 50% transmission chance and 5 days of sickness
    // Person Rhea;
     Population population(10,covid);
+    population.intial_infect();
 /*
     //exercise 49.4
     int countInfected =0;
@@ -250,7 +257,7 @@ int main(){
         cout << "In step " << day++ << " # sick = " << countInfected << ":" << population.toStringOne() << endl ;
         population.one_more_day();
     } while(countInfected>0);
-*/
+
     //exercise 49.5
     int countInfected =0;
     int day = 1;
@@ -259,7 +266,7 @@ int main(){
         cout << "In step " << day++ << " # sick = " << countInfected << ":" << population.toStringOne() << endl;
         // Spread the disease to neighbors
         population.one_more_day();
-        population.neighbor(covid, 1); // You can adjust the contagion probability
+        population.neighbor(covid, 0.5); // You can adjust the contagion probability
         
 
     } while (countInfected > 0);
@@ -281,8 +288,8 @@ int main(){
         }
       
     }
-*/
+
     return 0;
 }
-
+*/
 #endif
