@@ -125,7 +125,7 @@ class Population{
         //people[rand() % populationSize].infect(disease);
      }
 
-     void initial_infect(){
+     void initial_infect(Disease& disease){
         people[rand() % populationSize].infect(disease);
      }
     
@@ -247,7 +247,7 @@ int main(){
     Disease covid(5, 0.5);  // disease with 50% transmission chance and 5 days of sickness
    // Person Rhea;
     Population population(10,covid);
-    population.intial_infect();
+    population.intial_infect(covid);
 /*
     //exercise 49.4
     int countInfected =0;
