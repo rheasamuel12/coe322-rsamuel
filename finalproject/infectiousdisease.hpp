@@ -244,11 +244,12 @@ class Population{
  /*
 int main(){
 
-    Disease covid(5, 0.5);  // disease with 50% transmission chance and 5 days of sickness
+    Disease covid(5, 1);  // disease with 50% transmission chance and 5 days of sickness
    // Person Rhea;
     Population population(10,covid);
-    population.intial_infect(covid);
-/*
+    //population.initial_infect(covid);
+    population.people[0].infect(covid);
+
     //exercise 49.4
     int countInfected =0;
     int day = 1;
@@ -266,12 +267,12 @@ int main(){
         cout << "In step " << day++ << " # sick = " << countInfected << ":" << population.toStringOne() << endl;
         // Spread the disease to neighbors
         population.one_more_day();
-        population.neighbor(covid, 0.5); // You can adjust the contagion probability
+        population.neighbor(covid, 1); // You can adjust the contagion probability
         
 
     } while (countInfected > 0);
 
-/*
+
     // On each day, simulate Rhea's progression
     for (int x = 1; x <= 10;x++) {
         Rhea.one_more_day();
