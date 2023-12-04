@@ -6,3 +6,21 @@
 
 #IncludeRegexTransform: 
 
+/home/rheasamuel/coe322-rsamuel/finalproject/infectiousdisease2.hpp
+iostream
+-
+stdio.h
+-
+vector
+-
+algorithm
+-
+cstdlib
+-
+
+/home/rheasamuel/coe322-rsamuel/finalproject/main2.cpp
+infectiousdisease2.hpp
+/home/rheasamuel/coe322-rsamuel/finalproject/infectiousdisease2.hpp
+algorithm
+-
+

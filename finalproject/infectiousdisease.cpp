@@ -13,7 +13,7 @@ using namespace std;
 #include "catch2/catch_all.hpp"
 
 
-
+srand (time(NULL));
 //49.2.1.1 Person tests
 TEST_CASE("Infection with 100% transmittable disease", "[Person]") {
     Disease disease(5,1.0); // 100% transmission chance, 5 days of infection
@@ -137,7 +137,8 @@ TEST_CASE("Test simulation with p = 1", "[simulation]") {
     //tests if random index is sick, next day 3 are sick
     Disease disease(5, 1);
     Population population(10000, disease);
-    population.initial_infect(disease);
+    int randomNum = rand() % 10000;
+    population.people[randomNum].infect(disease);
     int index = 0;
     for(int x = 0; x<population.people.size(); x++){
         if(population.people[x].get_status() == "Infected"){
