@@ -1,4 +1,4 @@
-#include "infectiousdisease.hpp"
+#include "infectiousdisease2.hpp"
 #include <algorithm>
 using namespace std;
 
