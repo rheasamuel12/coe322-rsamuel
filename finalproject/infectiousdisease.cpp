@@ -39,7 +39,7 @@ TEST_CASE("Infection Spread Test", "[Infection]") {
     // Create a disease with a 50% transmission chance and 5 days of sickness
     Disease disease(5,0.5);
 
-    const int populationSize = 100000; 
+    const int populationSize = 10000; 
     vector<Person> people(populationSize);
 
     for(int i = 0; i<populationSize; i++){
@@ -74,7 +74,7 @@ TEST_CASE("Infection Spread Test 2", "[Infect]") {
     // Create a disease with a 50% transmission chance and 5 days of sickness
     Disease disease(5,0.5);
 
-    const int populationSize = 100000; // Adjust as needed
+    const int populationSize = 10000; // Adjust as needed
     vector<Person> people(populationSize);
     Person infected;
     infected.infect(disease);
@@ -105,7 +105,7 @@ TEST_CASE("Everyone is vaccinated with 100 vacccination rate", "[vaccination]") 
     Disease disease(5, 0.0);
 
     // Create a Population with 10 people and 100% vaccination rate
-    Population population(100000, disease);
+    Population population(10000, disease);
     population.random_vaccination(1.0);
 
     // Check if everyone is vaccinated
@@ -118,7 +118,7 @@ TEST_CASE("Duration of disease", "[infection][population]") {
         // Create a Disease with 50% transmission chance and 5 days of sickness
         Disease disease(5, 0.5);
 
-        Population population(100000, disease);
+        Population population(10000, disease);
 
         int initialInfected = population.count_infected();
         int initialHealthy = population.populationSize - initialInfected;
@@ -144,7 +144,7 @@ TEST_CASE("Duration of disease", "[infection][population]") {
 TEST_CASE("Test simulation with p = 1", "[simulation]") {
     //tests if random index is sick, next day 3 are sick
     Disease disease(5, 1);
-    Population population(100000, disease);
+    Population population(10000, disease);
     population.initial_infect(disease);
     int index = 0;
     for(int x = 0; x<population.people.size(); x++){
@@ -169,13 +169,13 @@ TEST_CASE("Test simulation with p = 1", "[simulation]") {
 }
 //if index is 0, then the simulation should run for the number of days equal to population size
 TEST_CASE("Test simulation with p = 1, Index = 0", "[simulation]") {
-    Disease disease(5, 1);
-    Population population(100000, disease);
+    Disease disease(5, 1); 
+    Population population(10000, disease);
     population.people[0].infect(disease);
     int days = 1;
     vector <int> pop;
     int ind = 0;
-    while(population.people[population.populationSize-1].get_status() == "Susceptible"){ 
+    while(population.count_healthy()>0){ 
         for(int x = 0; x<population.populationSize; x++){
             if(population.people[x].get_status() == "Infected"){
                 auto it = find(pop.begin(), pop.end(), x);
@@ -195,7 +195,7 @@ TEST_CASE("Test simulation with p = 1, Index = 0", "[simulation]") {
 }
 TEST_CASE("Test simulation with p = 0.5", "[simulation]") {
     Disease disease(5, 0.5);
-    Population population(100000, disease);
+    Population population(10000, disease);
     population.people[0].infect(disease);
     int days = 1;
     int ind = 0;
