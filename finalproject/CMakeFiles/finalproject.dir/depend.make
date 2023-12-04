@@ -3,7 +3,6 @@
 
 CMakeFiles/finalproject.dir/infectiousdisease.cpp.o: infectiousdisease.cpp
 CMakeFiles/finalproject.dir/infectiousdisease.cpp.o: infectiousdisease.hpp
-CMakeFiles/finalproject.dir/infectiousdisease.cpp.o: main.cpp
 CMakeFiles/finalproject.dir/infectiousdisease.cpp.o: /opt/local/packages/installation-catch2-3.1.1-isp-intel23/include/catch2/benchmark/catch_benchmark.hpp
 CMakeFiles/finalproject.dir/infectiousdisease.cpp.o: /opt/local/packages/installation-catch2-3.1.1-isp-intel23/include/catch2/benchmark/catch_benchmark_all.hpp
 CMakeFiles/finalproject.dir/infectiousdisease.cpp.o: /opt/local/packages/installation-catch2-3.1.1-isp-intel23/include/catch2/benchmark/catch_chronometer.hpp
@@ -162,4 +161,7 @@ CMakeFiles/finalproject.dir/infectiousdisease.cpp.o: /opt/local/packages/install
 CMakeFiles/finalproject.dir/infectiousdisease.cpp.o: /opt/local/packages/installation-catch2-3.1.1-isp-intel23/include/catch2/reporters/catch_reporter_teamcity.hpp
 CMakeFiles/finalproject.dir/infectiousdisease.cpp.o: /opt/local/packages/installation-catch2-3.1.1-isp-intel23/include/catch2/reporters/catch_reporter_xml.hpp
 CMakeFiles/finalproject.dir/infectiousdisease.cpp.o: /opt/local/packages/installation-catch2-3.1.1-isp-intel23/include/catch2/reporters/catch_reporters_all.hpp
+
+CMakeFiles/finalproject.dir/main.cpp.o: infectiousdisease.hpp
+CMakeFiles/finalproject.dir/main.cpp.o: main.cpp
 

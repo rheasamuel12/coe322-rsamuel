@@ -11,12 +11,12 @@ iostream
 -
 iomanip
 -
+algorithm
+-
 stdlib.h
 -
 infectiousdisease.hpp
 /home/rheasamuel/coe322-rsamuel/finalproject/infectiousdisease.hpp
-main.cpp
-/home/rheasamuel/coe322-rsamuel/finalproject/main.cpp
 catch2/catch_all.hpp
 /home/rheasamuel/coe322-rsamuel/finalproject/catch2/catch_all.hpp
 
@@ -27,15 +27,15 @@ stdio.h
 -
 vector
 -
+algorithm
+-
 cstdlib
 -
 
 /home/rheasamuel/coe322-rsamuel/finalproject/main.cpp
 infectiousdisease.hpp
 /home/rheasamuel/coe322-rsamuel/finalproject/infectiousdisease.hpp
-infectiousdisease.cpp
-/home/rheasamuel/coe322-rsamuel/finalproject/infectiousdisease.cpp
-iostream
+algorithm
 -
 
 /opt/local/packages/installation-catch2-3.1.1-isp-intel23/include/catch2/benchmark/catch_benchmark.hpp

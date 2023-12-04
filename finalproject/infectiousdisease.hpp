@@ -19,16 +19,12 @@ class Disease{
     private:
     double transmission_probability;
     int duration;
+    
     public:
-    static int variant_type;
-    static int transmissionCounterForMutation;
-    int activeVariant;
-
     Disease(int daysSick): duration(daysSick){}    
     //exercise 49.2
     Disease(int daysSick, double transmissionChance) 
         :duration(daysSick) , transmission_probability(transmissionChance){
-            activeVariant = variant_type;
             //srand (time(NULL));
         }
 
@@ -59,8 +55,6 @@ class Person{
     private:
     string status; //status of person (susceptible, infected, recovered, vaccinated)
     int infectiousDays;
-    vector<Disease> variants; 
-    Disease *activeDisease = NULL;
 
     public:
     Person() : status("Susceptible"), infectiousDays(1) {}
@@ -118,75 +112,17 @@ class Person{
                 infect(disease);
             }
         }
-    }
-
-//49.3.5 Mutation
-    void infectVariant(Disease& disease){ //infects with new variant
-        bool checkVector = false;
-        for(int x = 0; x<variants.size(); x++){
-            if(variants[x].variant_type == disease.variant_type)
-            {
-                checkVector = true;
-            }
-        }
-        if(disease.transmissionCounterForMutation == 0){ 
-                disease.variant_type+=1; //variant type
-                disease.transmissionCounterForMutation = 101; //time until new variant
-        }
-        if ((status == "Susceptible" || (status == "Recovered" && !checkVector))) {
-            activeDisease = new Disease(disease.getDuration(), disease.getTransmissionChance());
-            status = "Infected";
-            infectiousDays = disease.getDuration();
-            disease.transmissionCounterForMutation--;
-        }
-     }
-
-     void recoveredVariants(){
-        if(infectiousDays<=0){
-            status = "Recovered";
-            variants.push_back(*activeDisease);
-            activeDisease = NULL;
-        }
-    }
-     
-     void touchVariant(Person& infected, Disease& disease){
-        bool checkVector = false;
-        for(int x = 0; x<variants.size(); x++){
-            if(variants[x].variant_type == disease.variant_type)
-            {
-                checkVector = true;
-            }
-        }
-        if ((status == "Susceptible"  || (status == "Recovered" && !checkVector)) && infected.get_status() == "Infected") {
-            double randomValue = static_cast<double>(rand()) / (RAND_MAX + 1.0); // Random value between 0 and 1
-            if (randomValue < disease.getTransmissionChance()) {
-                infectVariant(disease);
-            }
-        }
-    }
-
-    void one_more_dayVariant(){ //updates the status of the person to the next day
-       if(status == "Infected" && infectiousDays>0)
-       {
-            infectiousDays--;
-            recoveredVariants();
-       }
-       
-    }
-
-     
+    }     
 };
 
 class Population{
     public:
     vector<Person> people;
     int populationSize;
-    //Disease& disease;
     public:
      Population(int size, Disease& disease): populationSize(size){
         srand( (unsigned)time( NULL ) );
         people.resize(populationSize);
-        //people[rand() % populationSize].infect(disease);
      }
 
      void initial_infect(Disease& disease){
@@ -194,9 +130,6 @@ class Population{
         if(people[randomValue].get_status() == "Susceptible")
             people[randomValue].infect(disease);
      }
-    
-
-    //Population(int size): populationSize(size){}
     void random_infectious(double percent, Disease& disease){
         int infectedPeople = percent*populationSize;
         int x = 0;
@@ -318,38 +251,6 @@ class Population{
             }
         }
     }
-
-//49.9 mutation
-    void random_infectiousVariant(double percent, Disease& disease){
-        int infectedPeople = percent*populationSize;
-        int x = 0;
-        double randomValue = 0.0;
-        while(x<infectedPeople){
-            randomValue = rand() % populationSize;
-            if(people[randomValue].get_status() == "Susceptible"){
-                people[randomValue].infectVariant(disease);
-                x++;
-            }
-        }
-    }
-    void one_more_dayVariant(){
-        for(int x = 0; x< populationSize;++x){
-            people[x].one_more_dayVariant();
-        }
-    }
-
-    void random_contact_infectionMutation(Disease& disease, int max_contact, int index){
-        int x = 0;
-        double randomValue = -1.0;
-        while(x<max_contact){
-            randomValue = rand() % populationSize;
-            if(index != randomValue){
-                people[randomValue].touchVariant(people[index],disease);
-                x++;
-            }
-        }
-    }
-    
 };
 
 #endif
