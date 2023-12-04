@@ -172,10 +172,11 @@ TEST_CASE("Test simulation with p = 1, Index = 0", "[simulation]") {
     Disease disease(5, 1); 
     Population population(10000, disease);
     population.people[0].infect(disease);
+    int countHealthy = 0;
     int days = 1;
     vector <int> pop;
     int ind = 0;
-    while(population.count_healthy()>0){ 
+    do {
         for(int x = 0; x<population.populationSize; x++){
             if(population.people[x].get_status() == "Infected"){
                 auto it = find(pop.begin(), pop.end(), x);
@@ -183,14 +184,15 @@ TEST_CASE("Test simulation with p = 1, Index = 0", "[simulation]") {
                     pop.push_back(x); //checks if the index is not already in the vector
                 }
             }
-        }        
+        } 
+        countHealthy = population.count_healthy();
         population.one_more_day();
-        while(ind<pop.size()){
-            population.neighbor(disease, 1, pop[ind]);    
-            ind++;    
-        }  
         days++;
-    }
+        while(ind<pop.size()){
+            population.neighbor(disease, probability, pop[ind]);    
+            ind++;    
+        }
+    } while (countHealthy > 0);
     REQUIRE(days == population.populationSize); 
 }
 TEST_CASE("Test simulation with p = 0.5", "[simulation]") {

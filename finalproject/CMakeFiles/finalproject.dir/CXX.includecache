@@ -32,6 +32,12 @@ algorithm
 cstdlib
 -
 
+/home/rheasamuel/coe322-rsamuel/finalproject/main.cpp
+infectiousdisease.hpp
+/home/rheasamuel/coe322-rsamuel/finalproject/infectiousdisease.hpp
+algorithm
+-
+
 /opt/local/packages/installation-catch2-3.1.1-isp-intel23/include/catch2/benchmark/catch_benchmark.hpp
 catch2/interfaces/catch_interfaces_config.hpp
 -
