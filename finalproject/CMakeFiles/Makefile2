@@ -94,12 +94,12 @@ clean: CMakeFiles/finalproject.dir/clean
 CMakeFiles/finalproject.dir/all:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/finalproject.dir/build.make CMakeFiles/finalproject.dir/depend
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/finalproject.dir/build.make CMakeFiles/finalproject.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/rheasamuel/coe322-rsamuel/finalproject/CMakeFiles --progress-num=1,2 "Built target finalproject"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/rheasamuel/coe322-rsamuel/finalproject/CMakeFiles --progress-num=1,2,3 "Built target finalproject"
 .PHONY : CMakeFiles/finalproject.dir/all
 
 # Build rule for subdir invocation for target.
 CMakeFiles/finalproject.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/rheasamuel/coe322-rsamuel/finalproject/CMakeFiles 2
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/rheasamuel/coe322-rsamuel/finalproject/CMakeFiles 3
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/finalproject.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/rheasamuel/coe322-rsamuel/finalproject/CMakeFiles 0
 .PHONY : CMakeFiles/finalproject.dir/rule

@@ -201,7 +201,7 @@ void personSimulation(){
         cout << "\nThe disease ran through the simulation for " << day-1 << " days" << endl;
         cout << "Ended with variant " <<  Disease::variant_type << endl;
     }
-    /*
+
 int main(){
     //personSimulation(); //exercise 49.1
     //populationSimulation(10000,0.30); //exercise 49.4
@@ -215,9 +215,8 @@ int main(){
             cout << endl;
         }
     } 
-
+*/
     //mutation(10000,0.3, 0.30); //exercise 49.9
 
     return 0;
 }
-*/

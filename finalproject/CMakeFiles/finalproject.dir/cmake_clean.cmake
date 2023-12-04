@@ -1,5 +1,6 @@
 file(REMOVE_RECURSE
   "CMakeFiles/finalproject.dir/infectiousdisease.cpp.o"
+  "CMakeFiles/finalproject.dir/main.cpp.o"
   "finalproject"
   "finalproject.pdb"
 )
