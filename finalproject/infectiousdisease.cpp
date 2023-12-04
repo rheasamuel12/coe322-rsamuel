@@ -175,8 +175,10 @@ TEST_CASE("Test simulation with p = 1, Index = 0", "[simulation]") {
     int days = 1;
     int x = 0;
     while(x < population.populationSize){
+        population.one_more_day();
         population.neighbor(disease, 1, x); 
         days++;
+        x++;
     }
     REQUIRE(days == population.populationSize); 
 }
