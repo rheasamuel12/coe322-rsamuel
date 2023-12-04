@@ -14,24 +14,24 @@ pkg_check_modules(CATCH2 REQUIRED catch2-with-main)
 add_executable(test infectiousdisease.cpp infectiousdisease.hpp)
 
 target_include_directories(
-    test_cases PUBLIC ${CATCH2_INCLUDE_DIRS}
+    test PUBLIC ${CATCH2_INCLUDE_DIRS}
 )
 
 target_link_directories(
-    test_cases PUBLIC ${CATCH2_LIBRARY_DIRS}
+    test PUBLIC ${CATCH2_LIBRARY_DIRS}
 )
 
 target_link_libraries(
-    test_cases PUBLIC ${CATCH2_LIBRARIES}
+    test PUBLIC ${CATCH2_LIBRARIES}
 )
 
 set_target_properties(
-    test_cases PROPERTIES
+    test PROPERTIES
     BUILD_RPATH "${CATCH2_LIBRARY_DIRS}"
     INSTALL_RPATH "${CATCH2_LIBRARY_DIRS}"
 )
 
-target_compile_features(test_cases PRIVATE cxx_std_17)
+target_compile_features(test PRIVATE cxx_std_17)
 install(TARGETS test_cases DESTINATION .)
 
 ##
@@ -68,22 +68,22 @@ install(TARGETS finalproject DESTINATION .)
 add_executable(finalprojectmutation infectiousdisease.cpp infectiousdisease.hpp main2.cpp)
 
 target_include_directories(
-    finalproject_with_mutation PUBLIC ${CATCH2_INCLUDE_DIRS}
+    finalprojectmutation PUBLIC ${CATCH2_INCLUDE_DIRS}
 )
 
 target_link_directories(
-    finalproject_with_mutation PUBLIC ${CATCH2_LIBRARY_DIRS}
+    finalprojectmutation PUBLIC ${CATCH2_LIBRARY_DIRS}
 )
 
 target_link_libraries(
-    finalproject_with_mutation PUBLIC ${CATCH2_LIBRARIES}
+    finalprojectmutation PUBLIC ${CATCH2_LIBRARIES}
 )
 
 set_target_properties(
-    finalproject_with_mutation PROPERTIES
+    finalprojectmutation PROPERTIES
     BUILD_RPATH "${CATCH2_LIBRARY_DIRS}"
     INSTALL_RPATH "${CATCH2_LIBRARY_DIRS}"
 )
 
-target_compile_features(finalproject_with_mutation PRIVATE cxx_std_17)
-install(TARGETS finalproject_with_mutation DESTINATION .)
+target_compile_features(finalprojectmutation PRIVATE cxx_std_17)
+install(TARGETS finalprojectmutation DESTINATION .)
