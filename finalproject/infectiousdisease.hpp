@@ -8,32 +8,36 @@
 #include <vector>
 #include<cstdlib>
 using namespace std;
-
+using std::vector;
 #ifndef INFECTIOUSDISEASE_HPP
 #define INFECTIOUSDISEASE_HPP
 
+
+
 class Disease{
-    public:
+    private:
     double transmission_probability;
     int duration;
-    
+    public:
+    static int variant_type;
+    static int transmissionCounterForMutation;
+    int activeVariant;
 
+    Disease(int daysSick): duration(daysSick){}    
     //exercise 49.2
-    Disease(int daysSick, int transmissionChance) 
+    Disease(int daysSick, double transmissionChance) 
         :duration(daysSick) , transmission_probability(transmissionChance){
-
-            srand (time(NULL));
+            activeVariant = variant_type;
+            //srand (time(NULL));
         }
 
-    Disease(){srand (time(NULL));} //empty constructor
-
+    Disease(){} //empty constructor
 
     //exercise 49.3
     void setDuration(int days)
     {
         duration = days;
     }
-    //exercise 49.3
     void setTransmissionChance(double prob)
     {
         transmission_probability = prob;
@@ -54,10 +58,14 @@ class Person{
     private:
     string status; //status of person (susceptible, infected, recovered, vaccinated)
     int infectiousDays;
+    vector<Disease> variants; 
+    Disease *activeDisease = NULL;
 
     public:
     Person() : status("Susceptible"), infectiousDays(1) {}
-    Person(string s, int iD) : status(s), infectiousDays(iD){}
+    Person(string s, int iD) : status(s), infectiousDays(iD){
+    }
+
     void infect(const Disease& disease) {
         if (status == "Susceptible") {
             status = "Infected";
@@ -80,9 +88,10 @@ class Person{
             infectiousDays--;
             isRecovered();
        }
-       else{
+       else if(infectiousDays != -5){ //not vaccinated
             isRecovered();
         }
+       
     }
     bool isRecovered(){
         if(infectiousDays<=0)
@@ -98,7 +107,7 @@ class Person{
     }
     void set_vaccinated(){
         status = "Vaccinated";
-        infectiousDays = 0;
+        infectiousDays = -5;
     }
 
     void touch(Person& infected, Disease& disease){
@@ -110,7 +119,61 @@ class Person{
         }
     }
 
+//49.3.5 Mutation
+    void infectVariant(Disease& disease){ //infects with new variant
+        bool checkVector = false;
+        for(int x = 0; x<variants.size(); x++){
+            if(variants[x].variant_type == disease.variant_type)
+            {
+                checkVector = true;
+            }
+        }
+        if(disease.transmissionCounterForMutation == 0){ 
+                disease.variant_type+=1; //variant type
+                disease.transmissionCounterForMutation = 101; //time until new variant
+        }
+        if ((status == "Susceptible" || (status == "Recovered" && !checkVector))) {
+            activeDisease = new Disease(disease.getDuration(), disease.getTransmissionChance());
+            status = "Infected";
+            infectiousDays = disease.getDuration();
+            disease.transmissionCounterForMutation--;
+        }
+     }
 
+     void recoveredVariants(){
+        if(infectiousDays<=0){
+            status = "Recovered";
+            variants.push_back(*activeDisease);
+            activeDisease = NULL;
+        }
+    }
+     
+     void touchVariant(Person& infected, Disease& disease){
+        bool checkVector = false;
+        for(int x = 0; x<variants.size(); x++){
+            if(variants[x].variant_type == disease.variant_type)
+            {
+                checkVector = true;
+            }
+        }
+        if ((status == "Susceptible"  || (status == "Recovered" && !checkVector)) && infected.get_status() == "Infected") {
+            double randomValue = static_cast<double>(rand()) / (RAND_MAX + 1.0); // Random value between 0 and 1
+            if (randomValue < disease.getTransmissionChance()) {
+                infectVariant(disease);
+            }
+        }
+    }
+
+    void one_more_dayVariant(){ //updates the status of the person to the next day
+       if(status == "Infected" && infectiousDays>0)
+       {
+            infectiousDays--;
+            recoveredVariants();
+       }
+       
+    }
+
+     
 };
 
 class Population{
@@ -118,7 +181,7 @@ class Population{
     vector<Person> people;
     int populationSize;
     //Disease& disease;
-
+    public:
      Population(int size, Disease& disease): populationSize(size){
         srand( (unsigned)time( NULL ) );
         people.resize(populationSize);
@@ -126,28 +189,47 @@ class Population{
      }
 
      void initial_infect(Disease& disease){
-        people[rand() % populationSize].infect(disease);
+        int randomValue = rand() % populationSize;
+        if(people[randomValue].get_status() == "Susceptible")
+            people[randomValue].infect(disease);
      }
     
 
     //Population(int size): populationSize(size){}
     void random_infectious(double percent, Disease& disease){
-        for(int i = 0; i<populationSize; i++){
-            double randomValue = static_cast<double>(rand()) / (RAND_MAX + 1.0);
-            if(randomValue < percent)
-            {
-                people[i].infect(disease);
+        int infectedPeople = percent*populationSize;
+        int x = 0;
+        double randomValue = 0.0;
+        while(x<infectedPeople){
+            randomValue = rand() % populationSize;
+            if(people[randomValue].get_status() == "Susceptible"){
+                people[randomValue].infect(disease);
+                x++;
             }
         }
     }
     void random_vaccination(double percent){
-        for(int i = 0; i<populationSize; i++){
-            double randomValue = static_cast<double>(rand()) / (RAND_MAX + 1.0);
-            if(randomValue < percent)
-            {
-                people[i].set_vaccinated();
+        int vaccinatedPeople = percent*populationSize;
+        int x = 0;
+        double randomValue = 0.0;
+        while(x<vaccinatedPeople){
+            randomValue = rand() % populationSize;
+            if(people[randomValue].get_status() == "Susceptible" || people[randomValue].get_status() == "Recovered"){
+                people[randomValue].set_vaccinated();
+                x++;
             }
         }
+
+    }
+    
+    vector<int> get_random_vaccination_index(){
+        vector <int> index;
+        for(int x = 0; x<populationSize; x++){
+            if(people[x].get_status() == "Vaccinated"){
+                index.push_back(x);
+            }
+        }
+        return index;
     }
     int count_vaccinated(){
         int vacc = 0;
@@ -164,12 +246,33 @@ class Population{
         int infected = 0;
         for(int x = 0; x<populationSize; x++)
         {
-            if(people[x].get_status() == "Infected")
-            {
+            if(people[x].get_status() == "Infected"){
                 infected++;
             }
         }
         return infected;
+    }
+
+    int count_recovered(){
+        int recovered = 0;
+        for(int x = 0; x<populationSize; x++)
+        {
+            if(people[x].get_status() == "Recovered"){
+                recovered++;
+            }
+        }
+        return recovered;
+    }
+
+    int count_healthy(){
+        int healthy = 0;
+        for(int x = 0; x<populationSize; x++)
+        {
+            if(people[x].get_status() == "Susceptible"){
+                healthy++;
+            }
+        }
+        return healthy;
     }
     void one_more_day(){
         for(int x = 0; x< populationSize;++x){
@@ -180,14 +283,11 @@ class Population{
     string toStringOne(){
         string ret = "";
         for(Person person: people){
-            if(person.get_status() == "Infected")
-            {
+            if(person.get_status() == "Infected"){
                 ret += " +";
-            }else if(person.get_status() == "Susceptible")
-            {
+            }else if(person.get_status() == "Susceptible"){
                 ret += " ?";
-            }else if(person.get_status() == "Recovered")
-            {
+            }else if(person.get_status() == "Recovered"){
                 ret+= " -";
             }
             else{
@@ -197,7 +297,6 @@ class Population{
         return ret;
     }
     void neighbor(Disease& disease, double probability){
-        double randomValue = static_cast<double>(rand()) / (RAND_MAX + 1.0);
         int firstIndex = -1;
         int lastIndex = -1;
         for (int x = 0; x < populationSize; ++x) { 
@@ -208,89 +307,77 @@ class Population{
                 lastIndex = x;
             }
         }
-
-        
-            if(randomValue<probability){
+    
                 //first and last index the same index // ? ? ? ? ? + +
                 if(firstIndex>0 && firstIndex<populationSize-1){
-                    people[firstIndex+1].infect(disease);
-                    people[firstIndex-1].infect(disease);
+                    people[firstIndex+1].touch(people[firstIndex],disease);
+                    people[firstIndex-1].touch(people[firstIndex],disease);
                 }
                 if(lastIndex<populationSize-1 && lastIndex>0){
-                    people[lastIndex+1].infect(disease);
-                    people[lastIndex-1].infect(disease);
+                    people[lastIndex+1].touch(people[lastIndex],disease);
+                    people[lastIndex-1].touch(people[lastIndex],disease);
                 }
                 else if(firstIndex==populationSize-1){
-                    people[firstIndex-1].infect(disease);
+                    people[firstIndex-1].touch(people[firstIndex],disease);
                 }
                 else if(firstIndex==0){
                     while(people[firstIndex+1].get_status() == "Infected"){
                         firstIndex+=1;
                     }
-                    people[firstIndex+1].infect(disease);
+                    people[firstIndex+1].touch(people[firstIndex],disease);
                 }
                 if(lastIndex==populationSize-1){
                     while(people[lastIndex-1].get_status() == "Infected"){
                         lastIndex-=1;
                     }
-                    people[lastIndex-1].infect(disease);
+                    people[lastIndex-1].touch(people[lastIndex],disease);
                 }
+
+    }
+//49.3.4  
+    void random_contact_infection(Disease& disease, int max_contact, int index){
+        int x = 0;
+        double randomValue = -1.0;
+        while(x<max_contact){
+            randomValue = rand() % populationSize;
+            if(index != randomValue){
+                people[randomValue].touch(people[index],disease);
+                x++;
             }
+        }
     }
 
+//49.9 mutation
+    void random_infectiousVariant(double percent, Disease& disease){
+        int infectedPeople = percent*populationSize;
+        int x = 0;
+        double randomValue = 0.0;
+        while(x<infectedPeople){
+            randomValue = rand() % populationSize;
+            if(people[randomValue].get_status() == "Susceptible"){
+                people[randomValue].infectVariant(disease);
+                x++;
+            }
+        }
+    }
+    void one_more_dayVariant(){
+        for(int x = 0; x< populationSize;++x){
+            people[x].one_more_dayVariant();
+        }
+    }
+
+    void random_contact_infectionMutation(Disease& disease, int max_contact, int index){
+        int x = 0;
+        double randomValue = -1.0;
+        while(x<max_contact){
+            randomValue = rand() % populationSize;
+            if(index != randomValue){
+                people[randomValue].touchVariant(people[index],disease);
+                x++;
+            }
+        }
+    }
+    
 };
 
-
- /*
-int main(){
-
-    Disease covid(5, 1);  // disease with 50% transmission chance and 5 days of sickness
-   // Person Rhea;
-    Population population(10,covid);
-    //population.initial_infect(covid);
-    population.people[0].infect(covid);
-
-    //exercise 49.4
-    int countInfected =0;
-    int day = 1;
-    do{
-        countInfected = population.count_infected();
-        cout << "In step " << day++ << " # sick = " << countInfected << ":" << population.toStringOne() << endl ;
-        population.one_more_day();
-    } while(countInfected>0);
-
-    //exercise 49.5
-    int countInfected =0;
-    int day = 1;
-    do {
-        countInfected = population.count_infected();
-        cout << "In step " << day++ << " # sick = " << countInfected << ":" << population.toStringOne() << endl;
-        // Spread the disease to neighbors
-        population.one_more_day();
-        population.neighbor(covid, 1); // You can adjust the contagion probability
-        
-
-    } while (countInfected > 0);
-
-
-    // On each day, simulate Rhea's progression
-    for (int x = 1; x <= 10;x++) {
-        Rhea.one_more_day();
-        if(Rhea.get_status() == "Infected")/
-        {
-            cout << "On day " << x << ", Rhea is " << Rhea.get_status() << " (" << Rhea.get_infectiousDays() + 1 << " more days to go)" << endl;
-        }
-        else
-            cout << "On day " << x << ", Rhea is " << Rhea.get_status() << endl;
-        // Infect Rhea on day 3
-        if (x == 3) {
-            Rhea.infect(covid);
-            //cout << "Rhea got infected!" << endl;
-        }
-      
-    }
-
-    return 0;
-}
-*/
 #endif
