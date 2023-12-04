@@ -236,7 +236,7 @@ class Population{
             people[x-1].touch(people[x],disease);
         }
         else if(x==0){
-            people[x-1].touch(people[x],disease);
+            people[x+1].touch(people[x],disease);
         }
         else if(x==populationSize-1){
             people[x-1].touch(people[x],disease);
