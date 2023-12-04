@@ -10,8 +10,8 @@
 #include<cstdlib>
 using namespace std;
 using std::vector;
-#ifndef INFECTIOUSDISEASE_HPP
-#define INFECTIOUSDISEASE_HPP
+#ifndef INFECTIOUSDISEASE2_HPP
+#define INFECTIOUSDISEASE2_HPP
 
 
 
@@ -67,6 +67,14 @@ class Person{
     Person(string s, int iD) : status(s), infectiousDays(iD){
     }
 
+    void infect(const Disease& disease) {
+        if (status == "Susceptible") {
+            status = "Infected";
+            infectiousDays = disease.getDuration();
+        }
+        
+     }
+
     string get_status(){ //returns whether person is S,I,R
         return status;
     }
@@ -75,7 +83,17 @@ class Person{
             status = s;
         }
     }
-
+    void one_more_day(){ //updates the status of the person to the next day
+       if(status == "Infected" && infectiousDays>0)
+       {
+            infectiousDays--;
+            isRecovered();
+       }
+       else if(infectiousDays != -5){ //not vaccinated
+            isRecovered();
+        }
+       
+    }
     bool isRecovered(){
         if(infectiousDays<=0)
         {
@@ -91,6 +109,15 @@ class Person{
     void set_vaccinated(){
         status = "Vaccinated";
         infectiousDays = -5;
+    }
+
+    void touch(Person& infected, Disease& disease){
+        if (status == "Susceptible" && infected.get_status() == "Infected") {
+            double randomValue = static_cast<double>(rand()) / (RAND_MAX + 1.0); // Random value between 0 and 1
+            if (randomValue < disease.getTransmissionChance()) {
+                infect(disease);
+            }
+        }
     }
 
 //49.3.5 Mutation
@@ -161,6 +188,27 @@ class Population{
         people.resize(populationSize);
         //people[rand() % populationSize].infect(disease);
      }
+
+     void initial_infect(Disease& disease){
+        int randomValue = rand() % populationSize;
+        if(people[randomValue].get_status() == "Susceptible")
+            people[randomValue].infect(disease);
+     }
+    
+
+    //Population(int size): populationSize(size){}
+    void random_infectious(double percent, Disease& disease){
+        int infectedPeople = percent*populationSize;
+        int x = 0;
+        double randomValue = 0.0;
+        while(x<infectedPeople){
+            randomValue = rand() % populationSize;
+            if(people[randomValue].get_status() == "Susceptible"){
+                people[randomValue].infect(disease);
+                x++;
+            }
+        }
+    }
     void random_vaccination(double percent){
         int vaccinatedPeople = percent*populationSize;
         int x = 0;
@@ -226,6 +274,49 @@ class Population{
             }
         }
         return healthy;
+    }
+    void one_more_day(){
+        for(int x = 0; x< populationSize;++x){
+            people[x].one_more_day();
+        }
+    }
+
+    string toStringOne(){
+        string ret = "";
+        for(Person person: people){
+            if(person.get_status() == "Infected"){
+                ret += " +";
+            }else if(person.get_status() == "Susceptible"){
+                ret += " ?";
+            }else if(person.get_status() == "Recovered"){
+                ret+= " -";
+            }
+            else{
+                ret+= " v";
+            }
+        }
+        return ret;
+    }
+    void neighbor(Disease& disease, double probability, int x){
+        if(x>0 && x<populationSize-1){
+            people[x+1].touch(people[x],disease);
+            people[x-1].touch(people[x],disease);
+        }
+        else if(x==populationSize-1){
+            people[x-1].touch(people[x],disease);
+        }
+    }
+//49.3.4  
+    void random_contact_infection(Disease& disease, int max_contact, int index){
+        int x = 0;
+        double randomValue = -1.0;
+        while(x<max_contact){
+            randomValue = rand() % populationSize;
+            if(index != randomValue){
+                people[randomValue].touch(people[index],disease);
+                x++;
+            }
+        }
     }
 
 //49.9 mutation
