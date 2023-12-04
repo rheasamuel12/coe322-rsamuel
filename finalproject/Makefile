@@ -221,7 +221,6 @@ infectiousdisease.o: infectiousdisease.cpp.o
 
 # target to build an object file
 infectiousdisease.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/finalprojectmutation.dir/build.make CMakeFiles/finalprojectmutation.dir/infectiousdisease.cpp.o
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/finalproject.dir/build.make CMakeFiles/finalproject.dir/infectiousdisease.cpp.o
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/test.dir/build.make CMakeFiles/test.dir/infectiousdisease.cpp.o
 .PHONY : infectiousdisease.cpp.o
@@ -232,7 +231,6 @@ infectiousdisease.i: infectiousdisease.cpp.i
 
 # target to preprocess a source file
 infectiousdisease.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/finalprojectmutation.dir/build.make CMakeFiles/finalprojectmutation.dir/infectiousdisease.cpp.i
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/finalproject.dir/build.make CMakeFiles/finalproject.dir/infectiousdisease.cpp.i
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/test.dir/build.make CMakeFiles/test.dir/infectiousdisease.cpp.i
 .PHONY : infectiousdisease.cpp.i
@@ -243,7 +241,6 @@ infectiousdisease.s: infectiousdisease.cpp.s
 
 # target to generate assembly for a file
 infectiousdisease.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/finalprojectmutation.dir/build.make CMakeFiles/finalprojectmutation.dir/infectiousdisease.cpp.s
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/finalproject.dir/build.make CMakeFiles/finalproject.dir/infectiousdisease.cpp.s
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/test.dir/build.make CMakeFiles/test.dir/infectiousdisease.cpp.s
 .PHONY : infectiousdisease.cpp.s

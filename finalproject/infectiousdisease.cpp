@@ -81,7 +81,7 @@ TEST_CASE("Infection Spread Test 2", "[Infect]") {
 
     for(int x = 0; x<populationSize; x++)
     {
-        infected.touch(people[x],disease);
+        people[x].touch(infected,disease);
     }
 
     // Count the number of people who are sick after the simulation
@@ -109,7 +109,7 @@ TEST_CASE("Everyone is vaccinated with 100 vacccination rate", "[vaccination]") 
     population.random_vaccination(1.0);
 
     // Check if everyone is vaccinated
-    REQUIRE(population.count_vaccinated() == 1000);
+    REQUIRE(population.count_vaccinated() == 10000);
     REQUIRE(population.count_infected() == 0);
 }
 
@@ -148,14 +148,14 @@ TEST_CASE("Test simulation with p = 1", "[simulation]") {
     population.initial_infect(disease);
     int index = 0;
     for(int x = 0; x<population.people.size(); x++){
-        if(population.people[0].get_status() == "Infected"){
+        if(population.people[x].get_status() == "Infected"){
             index = x;
         }
     }
     //one day
     int day = 0;
     bool ret = false;
-     if(population.people[0].get_status() == "Infected"|| population.people[population.populationSize-1].get_status() == "Infected"){
+    if(population.people[0].get_status() == "Infected"|| population.people[population.populationSize-1].get_status() == "Infected"){
         ret = true;
     }
     population.one_more_day();
