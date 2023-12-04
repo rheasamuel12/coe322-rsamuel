@@ -65,7 +65,7 @@ install(TARGETS finalproject DESTINATION .)
 ## Executable for simulation with mutation
 ##
 
-add_executable(finalprojectmutation infectiousdisease.cpp infectiousdisease2.hpp infectiousdisease.hpp main2.cpp)
+add_executable(finalprojectmutation infectiousdisease2.hpp infectiousdisease.hpp main2.cpp)
 
 target_include_directories(
     finalprojectmutation PUBLIC ${CATCH2_INCLUDE_DIRS}
