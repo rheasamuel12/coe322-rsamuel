@@ -183,32 +183,16 @@ TEST_CASE("Test simulation with p = 1, Index = 0", "[simulation]") {
     REQUIRE(days == population.populationSize); 
 }
 TEST_CASE("Test simulation with p = 0.5", "[simulation]") {
-    Disease disease(5, 0.5);
+    Disease disease(5, 0.5); 
     Population population(10000, disease);
-    population.people[0].infect(disease);
+    population.people[0].infect(disease); //+ ? ? ? 
     int days = 1;
-    int ind = 0;
-    int countInfected = 0;
-    vector <int> pop;
-    while(countInfected>0){
-        for(int x = 0; x<population.populationSize; x++){
-            if(population.people[x].get_status() == "Infected"){
-                auto it = find(pop.begin(), pop.end(), x);
-                if (it == pop.end()) {
-                    pop.push_back(x); //checks if the index is not already in the vector
-                }
-            }
-        } 
-        if(population.people[population.populationSize-1].get_status() != "Susceptible")
-            break;
-        countInfected = population.count_infected();
+    int x = 0;
+    while(x < population.populationSize-1){
         population.one_more_day();
-        while(ind<pop.size()){
-                population.neighbor(disease, 0.5, pop[ind]);    
-                ind++;    
-            }  
+        population.neighbor(disease, 0.5, x); 
         days++;
+        x++;
     }
-
     REQUIRE_NOTHROW(days == population.populationSize); // populationSize won't equal the days
 }
