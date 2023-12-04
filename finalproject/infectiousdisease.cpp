@@ -13,7 +13,7 @@ using namespace std;
 #include "catch2/catch_all.hpp"
 
 
-srand (time(NULL));
+srand( (unsigned)time( NULL ) );
 //49.2.1.1 Person tests
 TEST_CASE("Infection with 100% transmittable disease", "[Person]") {
     Disease disease(5,1.0); // 100% transmission chance, 5 days of infection
