@@ -145,17 +145,20 @@ TEST_CASE("Test simulation with p = 1", "[simulation]") {
     Disease disease(5, 1);
     Population population(100000, disease);
     population.initial_infect(disease);
+    int index = 0;
+    for(int x = 0; x<population.people.size(); x++){
+        if(population.people[0].get_status() == "Infected"){
+            index = x;
+        }
+    }
     //one day
     int day = 0;
     bool ret = false;
      if(population.people[0].get_status() == "Infected"|| population.people[population.populationSize-1].get_status() == "Infected"){
         ret = true;
     }
-    while(day<1){
-        population.one_more_day();
-        population.neighbor(disease, 1);
-        day++;
-    }
+    population.one_more_day();
+    population.neighbor(disease, 1, x);
     if(ret)
     {
         REQUIRE(population.count_infected() == 2);
@@ -169,9 +172,22 @@ TEST_CASE("Test simulation with p = 1, Index = 0", "[simulation]") {
     Population population(100000, disease);
     population.people[0].infect(disease);
     int days = 1;
-    while(population.people[population.populationSize-1].get_status() == "Susceptible"){        
+    vector <int> pop;
+    int ind = 0;
+    while(population.people[population.populationSize-1].get_status() == "Susceptible"){ 
+        for(int x = 0; x<population.populationSize; x++){
+            if(population.people[x].get_status() == "Infected"){
+                auto it = find(pop.begin(), pop.end(), x);
+                if (it == pop.end()) {
+                    pop.push_back(x); //checks if the index is not already in the vector
+                }
+            }
+        }        
         population.one_more_day();
-        population.neighbor(disease, 1); 
+        while(ind<pop.size()){
+            population.neighbor(disease, 1, pop[ind]);    
+            ind++;    
+        }  
         days++;
     }
     REQUIRE(days == population.populationSize); 
@@ -181,8 +197,8 @@ TEST_CASE("Test simulation with p = 0.5", "[simulation]") {
     Population population(100000, disease);
     population.people[0].infect(disease);
     int days = 1;
-    int ind = 0
-    int countInfected = 1;
+    int ind = 0;
+    int countInfected = 0;
     vector <int> pop;
     while(countInfected>0){
         for(int x = 0; x<population.populationSize; x++){
