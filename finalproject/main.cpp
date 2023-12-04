@@ -1,4 +1,5 @@
 #include "infectiousdisease.hpp"
+#include <algorithm>
 using namespace std;
 
 //exercise 49.1
