@@ -5,6 +5,7 @@
 
 #include <iostream>
 #include <iomanip>
+#include <algorithm>
 #include <stdlib.h>
 using namespace std;
 #include "infectiousdisease.hpp"
