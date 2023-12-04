@@ -158,7 +158,7 @@ TEST_CASE("Test simulation with p = 1", "[simulation]") {
         ret = true;
     }
     population.one_more_day();
-    population.neighbor(disease, 1, x);
+    population.neighbor(disease, 1, index);
     if(ret)
     {
         REQUIRE(population.count_infected() == 2);
