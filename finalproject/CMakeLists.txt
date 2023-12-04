@@ -32,7 +32,7 @@ set_target_properties(
 )
 
 target_compile_features(test PRIVATE cxx_std_17)
-install(TARGETS test_cases DESTINATION .)
+install(TARGETS test DESTINATION .)
 
 ##
 ## Executable for simulation without mutation
