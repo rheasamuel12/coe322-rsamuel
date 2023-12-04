@@ -8,7 +8,6 @@
 #include <stdlib.h>
 using namespace std;
 #include "infectiousdisease.hpp"
-#include "main.cpp"
 #define CATCH_CONFIG_MAIN
 #include "catch2/catch_all.hpp"
 
