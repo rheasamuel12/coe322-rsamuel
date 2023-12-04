@@ -8,6 +8,7 @@
 #include <stdlib.h>
 using namespace std;
 #include "infectiousdisease.hpp"
+#include "main.cpp"
 #define CATCH_CONFIG_MAIN
 #include "catch2/catch_all.hpp"
 
@@ -17,7 +18,6 @@ using namespace std;
 TEST_CASE("Infection with 100% transmittable disease", "[Person]") {
     Disease disease(5,1.0); // 100% transmission chance, 5 days of infection
     Person person;
-    // After being infected, the person should register as sick
     person.infect(disease);
     REQUIRE(person.get_status() == "Infected");
 }
@@ -25,12 +25,9 @@ TEST_CASE("Infection with 100% transmittable disease", "[Person]") {
 TEST_CASE("Contact with vaccinated/recovered person and disease", "[Person]") {
     Disease disease(7,1.0); // 50% transmission chance
     Person vaccinatedPerson("Vaccinated", 0);
-    //vaccinatedPerson.get_vaccinated();
 
     Person recoveredPerson("Recovered", 0);
-    //recoveredPerson.one_more_day(); // Make the person "Recovered"
 
-    // If vaccinated or recovered, they should stay in their original state
     vaccinatedPerson.infect(disease);
     recoveredPerson.infect(disease);
 
@@ -42,11 +39,9 @@ TEST_CASE("Infection Spread Test", "[Infection]") {
     // Create a disease with a 50% transmission chance and 5 days of sickness
     Disease disease(5,0.5);
 
-    // Create a population of people
-    const int populationSize = 100000; // Adjust as needed
+    const int populationSize = 100000; 
     vector<Person> people(populationSize);
 
-    // Infect a fixed percentage of people (e.g., 50%)
     for(int i = 0; i<populationSize; i++){
         double randomValue = static_cast<double>(rand()) / (RAND_MAX + 1.0);
         if(randomValue < disease.getTransmissionChance())
@@ -55,7 +50,6 @@ TEST_CASE("Infection Spread Test", "[Infection]") {
         }
     }
 
-    // Count the number of people who are sick after the simulation
     int numSick = 0;
     for (auto& person : people) {
         if (person.get_status() == "Infected") {
@@ -63,12 +57,11 @@ TEST_CASE("Infection Spread Test", "[Infection]") {
         }
     }
 
-    // Check if about half of the people got sick
     double actualPercentage = static_cast<double>(numSick) / populationSize;
 
-    // Allow some tolerance due to randomness
-    REQUIRE(actualPercentage >= covid.getTransmissionChance() - 0.1);
-    REQUIRE(actualPercentage <= covid.getTransmissionChance() + 0.1);
+    //tolerance
+    REQUIRE(actualPercentage >= disease.getTransmissionChance() - 0.1);
+    REQUIRE(actualPercentage <= disease.getTransmissionChance() + 0.1);
 }
 
 
@@ -81,13 +74,11 @@ TEST_CASE("Infection Spread Test 2", "[Infect]") {
     // Create a disease with a 50% transmission chance and 5 days of sickness
     Disease disease(5,0.5);
 
-    // Create a population of people
     const int populationSize = 100000; // Adjust as needed
     vector<Person> people(populationSize);
     Person infected;
     infected.infect(disease);
-    // Simulate the progression for a number of days
-    // Check if the person can infect others by coming in contact with infected individuals
+
     for(int x = 0; x<populationSize; x++)
     {
         infected.touch(people[x],disease);
@@ -103,9 +94,9 @@ TEST_CASE("Infection Spread Test 2", "[Infect]") {
 
     // Check if about half of the people got sick
     double actualPercentage = static_cast<double>(numSick) / populationSize;
-    // Allow some tolerance due to randomness
-    REQUIRE(actualPercentage >= covid.getTransmissionChance() - 0.1);
-    REQUIRE(actualPercentage <= covid.getTransmissionChance() + 0.1);
+    //tolerance
+    REQUIRE(actualPercentage >= disease.getTransmissionChance() - 0.1);
+    REQUIRE(actualPercentage <= disease.getTransmissionChance() + 0.1);
 }
 
 //49.2.3.1 POPULATION TESTS
@@ -127,7 +118,6 @@ TEST_CASE("Duration of disease", "[infection][population]") {
         // Create a Disease with 50% transmission chance and 5 days of sickness
         Disease disease(5, 0.5);
 
-        // Create a Population with 100 people and 0% vaccination rate
         Population population(100000, disease);
 
         int initialInfected = population.count_infected();
