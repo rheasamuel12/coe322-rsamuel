@@ -173,6 +173,7 @@ TEST_CASE("Test simulation with p = 1, Index = 0", "[simulation]") {
     Population population(10000, disease);
     population.people[0].infect(disease); //+ ? ? ? 
     int days = 1;
+    int x = 0;
     while(x < population.populationSize){
         population.neighbor(disease, 1, x); 
         days++;
