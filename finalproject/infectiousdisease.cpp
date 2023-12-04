@@ -8,7 +8,6 @@
 #include <stdlib.h>
 using namespace std;
 #include "infectiousdisease.hpp"
-#include "main.cpp"
 #define CATCH_CONFIG_MAIN
 #include "catch2/catch_all.hpp"
 
@@ -182,13 +181,26 @@ TEST_CASE("Test simulation with p = 0.5", "[simulation]") {
     Population population(100000, disease);
     population.people[0].infect(disease);
     int days = 1;
+    int ind = 0
     int countInfected = 1;
+    vector <int> pop;
     while(countInfected>0){
+        for(int x = 0; x<population.populationSize; x++){
+            if(population.people[x].get_status() == "Infected"){
+                auto it = find(pop.begin(), pop.end(), x);
+                if (it == pop.end()) {
+                    pop.push_back(x); //checks if the index is not already in the vector
+                }
+            }
+        } 
         if(population.people[population.populationSize-1].get_status() != "Susceptible")
             break;
         countInfected = population.count_infected();
         population.one_more_day();
-        population.neighbor(disease, 0.5); 
+        while(ind<pop.size()){
+                population.neighbor(disease, 0.5, pop[ind]);    
+                ind++;    
+            }  
         days++;
     }
 
