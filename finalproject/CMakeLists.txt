@@ -12,7 +12,7 @@ pkg_check_modules( CATCH2 REQUIRED catch2-with-main )
 ## main
 ##
 
-add_executable( finalproject infectiousdisease.cpp main.cpp infectiousdisease.hpp)
+add_executable( finalproject infectiousdisease.cpp infectiousdisease.hpp)
 
 target_include_directories( 
 	finalproject PUBLIC ${CATCH2_INCLUDE_DIRS}
