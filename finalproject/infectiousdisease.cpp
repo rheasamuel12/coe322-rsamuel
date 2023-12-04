@@ -189,7 +189,7 @@ TEST_CASE("Test simulation with p = 1, Index = 0", "[simulation]") {
         population.one_more_day();
         days++;
         while(ind<pop.size()){
-            population.neighbor(disease, probability, pop[ind]);    
+            population.neighbor(disease, 1, pop[ind]);    
             ind++;    
         }
     } while (countHealthy > 0);
