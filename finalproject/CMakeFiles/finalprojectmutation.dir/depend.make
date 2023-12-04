@@ -162,6 +162,6 @@ CMakeFiles/finalprojectmutation.dir/infectiousdisease.cpp.o: /opt/local/packages
 CMakeFiles/finalprojectmutation.dir/infectiousdisease.cpp.o: /opt/local/packages/installation-catch2-3.1.1-isp-intel23/include/catch2/reporters/catch_reporter_xml.hpp
 CMakeFiles/finalprojectmutation.dir/infectiousdisease.cpp.o: /opt/local/packages/installation-catch2-3.1.1-isp-intel23/include/catch2/reporters/catch_reporters_all.hpp
 
-CMakeFiles/finalprojectmutation.dir/main2.cpp.o: infectiousdisease.hpp
+CMakeFiles/finalprojectmutation.dir/main2.cpp.o: infectiousdisease2.hpp
 CMakeFiles/finalprojectmutation.dir/main2.cpp.o: main2.cpp
 
