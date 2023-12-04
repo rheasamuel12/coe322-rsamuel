@@ -296,43 +296,14 @@ class Population{
         }
         return ret;
     }
-    void neighbor(Disease& disease, double probability){
-        int firstIndex = -1;
-        int lastIndex = -1;
-        for (int x = 0; x < populationSize; ++x) { 
-            if(people[x].get_status() == "Infected" && firstIndex < 0){
-                firstIndex = x;
-            }
-            else if(people[x].get_status() == "Infected"){
-                lastIndex = x;
-            }
+    void neighbor(Disease& disease, double probability, int x){
+        if(x>0 && x<populationSize-1){
+            people[x+1].touch(people[x],disease);
+            people[x-1].touch(people[x],disease);
         }
-    
-                //first and last index the same index // ? ? ? ? ? + +
-                if(firstIndex>0 && firstIndex<populationSize-1){
-                    people[firstIndex+1].touch(people[firstIndex],disease);
-                    people[firstIndex-1].touch(people[firstIndex],disease);
-                }
-                if(lastIndex<populationSize-1 && lastIndex>0){
-                    people[lastIndex+1].touch(people[lastIndex],disease);
-                    people[lastIndex-1].touch(people[lastIndex],disease);
-                }
-                else if(firstIndex==populationSize-1){
-                    people[firstIndex-1].touch(people[firstIndex],disease);
-                }
-                else if(firstIndex==0){
-                    while(people[firstIndex+1].get_status() == "Infected"){
-                        firstIndex+=1;
-                    }
-                    people[firstIndex+1].touch(people[firstIndex],disease);
-                }
-                if(lastIndex==populationSize-1){
-                    while(people[lastIndex-1].get_status() == "Infected"){
-                        lastIndex-=1;
-                    }
-                    people[lastIndex-1].touch(people[lastIndex],disease);
-                }
-
+        else if(x==populationSize-1){
+            people[x-1].touch(people[x],disease);
+        }
     }
 //49.3.4  
     void random_contact_infection(Disease& disease, int max_contact, int index){
