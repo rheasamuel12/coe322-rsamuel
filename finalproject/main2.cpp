@@ -5,12 +5,11 @@ using namespace std;
 
 //exercise 49.9
     int Disease::variant_type = 1;
-    int Disease::transmissionCounterForMutation = 101; //change as desired (to increase/decrease mutation rate)
+    int Disease::transmissionCounterForMutation = 150; //change as desired (to increase/decrease mutation rate)
 
     void mutation(int popSize, double probability, double vaccRate){
         Disease disease(5, probability);  
         Population population(popSize,disease);
-        //population.initial_infect(disease); //infect only one person initially
         cout << "Initial Values: \nVariant type: " << Disease::variant_type << "\nTransmission Counter: " <<  Disease::transmissionCounterForMutation << endl;
         population.random_infectiousVariant(0.01, disease); //infect 10% of the population
         population.random_vaccination(vaccRate);
@@ -39,7 +38,7 @@ using namespace std;
             cout << "In step " << day++ << " # sick = " << countInfected << "\n# vaccinated = " << countVaccinated << "\n# healthy = " << countHealthy << endl;
             population.one_more_dayVariant();
             while(ind<pop.size()){
-                population.random_contact_infectionMutation(disease, 6, pop[ind]); 
+                population.random_contact_infectionMutation(disease, 6, pop[ind]); //randomly infects an individual
                 ind++;  
             }  
         } while (countInfected > 0);
@@ -48,6 +47,6 @@ using namespace std;
     }
 
 int main(){
-    mutation(10000,0.3, 0.30); //exercise 49.9
+    mutation(10000,0.3, 0.25); //exercise 49.9
     return 0;
 }
